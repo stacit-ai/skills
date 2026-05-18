@@ -5,6 +5,10 @@
 ```
 skills/              ← installable skills; flat — one directory per skill name
 docs/                ← knowledge base for this repository
+  QUALITY.md         ← acceptance criteria for skills
+  WORKFLOW.md        ← authoring and review process
+  REFERENCES.md      ← external documentation links
+  SECURITY.md        ← security constraints
   specs/             ← per-skill intent; one file per skill (docs/specs/<name>.md)
 .github/
   workflows/         ← CI pipeline definitions (GitHub Actions)
@@ -12,7 +16,6 @@ scripts/             ← repo-level validators and formatters (Python/uv or Deno
 .agents/skills/      ← symlink → ../skills; allows skills here to load each other
 AGENTS.md            ← agent entry point; map only (target 50–100 lines, hard limit 120)
 ARCHITECTURE.md      ← this file
-SECURITY.md          ← security constraints
 ```
 
 ## Key Invariants

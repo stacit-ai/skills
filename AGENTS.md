@@ -14,11 +14,11 @@ docs/                ← knowledge base for this repository
   QUALITY.md         ← acceptance criteria for skills
   WORKFLOW.md        ← authoring and review process
   REFERENCES.md      ← external documentation links
+  SECURITY.md        ← secrets, PII, and content safety rules
 .agents/skills/      ← symlink → skills/ (allows skills here to load each other)
 .github/workflows/   ← CI pipeline definitions (GitHub Actions)
 scripts/             ← repo-level validators and formatters
 ARCHITECTURE.md      ← structural rules and ownership map
-SECURITY.md          ← secrets, PII, and content safety rules
 ```
 
 Skills in `skills/` are deployed standalone — end users see only `skills/<name>/`.
@@ -46,9 +46,9 @@ harness is worse than none — it actively misleads agents into producing wrong 
 | [docs/QUALITY.md](docs/QUALITY.md) | Authoring or reviewing a skill |
 | [docs/WORKFLOW.md](docs/WORKFLOW.md) | Starting or handing off authoring work |
 | [docs/specs/](docs/specs/) | Understanding the intent of a specific skill |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | Modifying repo structure or ownership boundaries |
-| [SECURITY.md](SECURITY.md) | Handling external content, secrets, PII, or script execution |
+| [docs/SECURITY.md](docs/SECURITY.md) | Handling external content, secrets, PII, or script execution |
 | [docs/REFERENCES.md](docs/REFERENCES.md) | Looking up external documentation |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Modifying repo structure or ownership boundaries |
 
 ## Validation
 
