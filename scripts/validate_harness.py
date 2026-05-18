@@ -18,8 +18,8 @@ import os
 import sys
 from pathlib import Path
 
-REQUIRED_ROOT_FILES = ["AGENTS.md", "ARCHITECTURE.md", "SECURITY.md"]
-REQUIRED_DOCS_FILES = ["docs/QUALITY.md", "docs/WORKFLOW.md", "docs/REFERENCES.md"]
+REQUIRED_ROOT_FILES = ["AGENTS.md", "ARCHITECTURE.md"]
+REQUIRED_DOCS_FILES = ["docs/QUALITY.md", "docs/WORKFLOW.md", "docs/REFERENCES.md", "docs/SECURITY.md"]
 
 AGENTS_MD_WARN = 100
 AGENTS_MD_LIMIT = 120
