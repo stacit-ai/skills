@@ -108,6 +108,8 @@ combined commit:**
 
 ## Step 4 — Scan for Sensitive Information
 
+### 4a — Check staged diff for secrets
+
 Run against the staged diff:
 
 ```bash
@@ -127,6 +129,30 @@ thorough scan.
 
 **On any confirmed finding without explicit user clearance: stop and ask the user to
 review before proceeding. Never commit sensitive data silently.**
+
+### 4b — Check committer identity
+
+Read the email that will be recorded as the commit author:
+
+```bash
+git config --local user.email 2>/dev/null || git config user.email
+```
+
+**Project convention takes highest priority.** If Step 1 found an explicit email or
+domain requirement in `AGENTS.md` or `CONTRIBUTING.md`, apply that rule and skip the
+check below.
+
+Otherwise, warn and stop if the email domain is a **personal email provider**:
+
+- [Warn] Personal providers: `gmail.com`, `outlook.com`, `icloud.com`, `yahoo.com`, `qq.com`, `protonmail.com`, etc.
+- [Accept] No warning: `*.users.noreply.github.com`, `*.users.noreply.gitlab.com`, any company / org domain not listed above
+
+On a personal email without project clearance, stop and ask the user:
+
+> The committer email is set to a personal address (`<email>`). This may expose your
+> private email in public commit history. Consider using a platform noreply address
+> (e.g. `1234567+user@users.noreply.github.com`) or your work email. Confirm this is
+> intentional before proceeding.
 
 ## Step 5 — Verify Pre-commit Hooks
 
@@ -231,6 +257,11 @@ files or history only), suggest to the user after the commit succeeds:
 
 ## Gotchas
 
+- **Committer email check respects project convention** — if `AGENTS.md` or
+  `CONTRIBUTING.md` explicitly specifies an allowed email or domain, the
+  personal-email warning is skipped. Personal email is only flagged when no project
+  rule covers it, since it may expose the contributor's private address in public
+  commit history.
 - **Explicit docs win over everything** — a rule stated in `AGENTS.md` or
   `CONTRIBUTING.md` is final; do not second-guess it with history or inference.
 - **History fills gaps, not overrides** — if history shows `Fix:` (capitalized) and
