@@ -45,14 +45,6 @@ Use this decision tree. Stop at the first matching rule.
 Is this reverting a prior commit?
   YES → revert
 
-Is this a build system or dependency change
-      (webpack, gradle, package.json deps, etc.)?
-  YES → build
-
-Is this a CI pipeline change
-      (.github/workflows, Jenkinsfile, .travis.yml, etc.)?
-  YES → ci
-
 Is there a user-visible behavior change that did not exist before?
   YES → Is it correcting incorrect behavior?
          YES → fix
@@ -65,12 +57,21 @@ Is this a code change with no external behavior change?
                 YES → refactor
                 NO  → Is it cosmetic only (whitespace, formatting, lint rules)?
                        YES → style
+                       NO  → refactor
 
 Is this adding or updating tests only?
   YES → test
 
 Is this updating documentation only?
   YES → docs
+
+Is this a build system or dependency change
+      (webpack, gradle, package.json deps, etc.)?
+  YES → build
+
+Is this a CI pipeline change
+      (.github/workflows, Jenkinsfile, .travis.yml, etc.)?
+  YES → ci
 
 Everything else (release scripts, .gitignore, tooling not in build/ci):
   → chore
@@ -157,6 +158,11 @@ commit-message linting or hook workflow if one is configured:
   logic change. If a lint rule enforcement also alters logic, use `fix`.
 - **`chore` is not a catch-all** — use it only for maintenance that touches no `src/`
   or test files. Adding a tool or config that affects the build is `build`.
+- **`build`/`ci` yield to behavioral types** — when a dependency change or CI update
+  also introduces user-visible behavior, `feat` (or `fix`) takes precedence; `build`/`ci`
+  are evaluated only after all behavioral and structural checks. If the commit mixes
+  build infrastructure with feature code, prefer splitting into two commits (`build` +
+  `feat`) for cleaner history and correct semantic-release version bumps.
 - **`feat` requires net-new user-visible behavior** — extending an endpoint with a new
   optional parameter is `feat`; adding a required parameter is `feat!` (breaking).
 - **Scope parentheses are literal `()`** — if history uses `[scope]` or `scope/`,
