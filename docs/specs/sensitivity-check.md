@@ -1,4 +1,4 @@
-# Spec: sensitive-info-guard
+# Spec: sensitivity-check
 
 ## Purpose
 

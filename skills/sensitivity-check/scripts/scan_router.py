@@ -5,7 +5,7 @@
 # ]
 # requires-python = ">=3.11"
 # ///
-"""Classify text or files for sensitive-info-guard scan routing.
+"""Classify text or files for sensitivity-check scan routing.
 
 Each item is classified as:
   deep   — token count <= threshold: suitable for direct LLM deep read
@@ -120,7 +120,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description=(
             "Classify text or files as 'deep', 'script', or 'binary' "
-            "based on GPT-4 token count. Used by sensitive-info-guard "
+            "based on GPT-4 token count. Used by sensitivity-check "
             "to decide whether to scan with an LLM or with scripts."
         ),
         epilog=(
