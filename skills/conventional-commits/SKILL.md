@@ -142,8 +142,8 @@ Rules:
 
 ## Step 7 — Validate
 
-Verify manually or with `uv run scripts/validate_commit_msg.py` from the git-commit
-skill if available:
+Validate the message manually using the checklist below, or use the project's own
+commit-message linting or hook workflow if one is configured:
 
 - [ ] Title ≤ 50 characters
 - [ ] Title does not end with a period
