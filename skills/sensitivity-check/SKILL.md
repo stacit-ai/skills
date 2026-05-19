@@ -1,5 +1,5 @@
 ---
-name: sensitive-info-guard
+name: sensitivity-check
 description: >
   Detects personally identifiable information (PII) and confidential/secret data in
   text or files. Use when scanning for sensitive data, checking for leaked credentials
@@ -13,7 +13,7 @@ compatibility: >
   pii_scan.py requires an extra uv flag; see Step 4a.
 ---
 
-# Sensitive Information Guard
+# Sensitivity Check
 
 ## Step 1 — Clarify Scope
 
