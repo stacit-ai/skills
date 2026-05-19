@@ -60,7 +60,8 @@ def _count_tokens(text: str, encoding) -> tuple[int, bool]:
 def _is_binary(path: Path) -> bool:
     """Return True if the file cannot be decoded as UTF-8 text."""
     try:
-        path.read_bytes()[:BINARY_PROBE_BYTES].decode("utf-8")
+        with path.open("rb") as file_obj:
+            file_obj.read(BINARY_PROBE_BYTES).decode("utf-8")
         return False
     except UnicodeDecodeError:
         return True
