@@ -23,7 +23,7 @@ import tempfile
 from pathlib import Path
 
 
-def _run_detect_secrets(scan_paths: list[str]) -> dict:
+def _run_detect(scan_paths: list[str]) -> dict:
     """Invoke detect-secrets via subprocess and return the parsed JSON output.
 
     Tries `detect-secrets scan` first, then falls back to
@@ -66,16 +66,16 @@ def _run_detect_secrets(scan_paths: list[str]) -> dict:
 def _normalize(raw: dict, label_map: dict[str, str] | None = None) -> list[dict]:
     """Flatten detect-secrets results into a uniform list of finding dicts."""
     findings = []
-    for filepath, secrets in raw.get("results", {}).items():
+    for filepath, results in raw.get("results", {}).items():
         display = (label_map or {}).get(filepath, filepath)
-        for secret in secrets:
+        for result in results:
             findings.append(
                 {
                     "file": display,
-                    "line": secret.get("line_number"),
-                    "type": secret.get("type", "Unknown"),
-                    "is_verified": secret.get("is_verified", False),
-                    "hashed_secret": secret.get("hashed_secret", ""),
+                    "line": result.get("line_number"),
+                    "type": result.get("type", "Unknown"),
+                    "is_verified": result.get("is_verified", False),
+                    "hashed_secret": result.get("hashed_secret", ""),
                 }
             )
     return findings
@@ -140,7 +140,7 @@ def main() -> None:
             parser.error(f"File(s) not found: {', '.join(missing)}")
         scan_paths.extend(args.file)
 
-    raw = _run_detect_secrets(scan_paths)
+    raw = _run_detect(scan_paths)
 
     # Always clean up temp file before reporting errors
     if tmp_path:
