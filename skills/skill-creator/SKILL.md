@@ -92,9 +92,16 @@ Load [assets/skill_template.md](assets/skill_template.md) for frontmatter boiler
 Frontmatter checklist:
 
 - [ ] `name` matches the directory name exactly
-- [ ] `description`: third person; first sentence = capability (action verbs + domain
-  keywords); remaining sentences = trigger conditions including indirect phrasings;
-  1–1024 chars
+- [ ] `description`: First sentence in third person = capability statement (action
+  verbs + domain keywords; no internal implementation details). Remaining sentences:
+  imperative "Use when…" focused on user intent and task — not internal components
+  (scripts, templates, output format). Cover indirect phrasings a user might say
+  without naming the domain. 1–1024 chars.
+  - **Good**: "Extract text and tables from PDF files, fill forms, and merge
+    documents. Use when working with PDF files or when the user mentions PDFs,
+    forms, or document extraction."
+  - **Bad**: "Helps with documents." — agent cannot distinguish this skill from
+    any other document-related skill.
 - [ ] `compatibility` ≤ 500 chars (include only if specific environment is required)
 - [ ] Remove `allowed-tools` and `metadata` unless intentionally needed
 
@@ -107,8 +114,14 @@ Body checklist:
 
 ### 4. Add Scripts (if needed)
 
-Add scripts only when the logic is deterministic and would be regenerated identically
-every run without one.
+Add a script when any of these conditions holds:
+- The operation is deterministic and would produce identical code on every invocation.
+- Without the script, the same logic must be regenerated from scratch each time.
+- Errors require structured, explicit output that inline code generation cannot
+  reliably provide.
+
+Generate inline first. Extract to a script only after the pattern repeats across
+multiple runs.
 
 Load the language-specific reference and template before writing:
 
@@ -121,8 +134,20 @@ Load the language-specific reference and template before writing:
 - Ruby: read [references/ruby_script_spec.md](references/ruby_script_spec.md),
   load [assets/ruby_script_template.rb](assets/ruby_script_template.rb)
 
-All scripts must: implement `--help`; accept all input via flags (no interactive
-prompts); send data to stdout, diagnostics to stderr; use exit codes 0/1/2.
+All scripts must follow these rules regardless of language:
+
+- **No interactive prompts** — agents run in non-interactive shells; TTY prompts hang
+  indefinitely. Accept all input via flags.
+- **`--help` output** — the primary interface discovery mechanism for agents.
+- **Data to stdout, diagnostics to stderr** — structured output (JSON preferred)
+  enables downstream composability.
+- **Meaningful exit codes** — 0 success, 2 bad arguments, 1 general error; document
+  any non-standard codes in `--help`.
+- **Idempotent by default** — agents may retry; "create if absent" is safer than
+  "fail on duplicate".
+- **Meaningful output** — errors must state what is wrong, why, and how to fix it;
+  a linter that only reports the offending line without explanation forces a
+  round-trip back to the agent.
 
 ### 5. Add References and Assets (if needed)
 
@@ -188,3 +213,5 @@ Load [references/spec_hard_rules.md](references/spec_hard_rules.md) if any check
   a Bun script.
 - Read [references/ruby_script_spec.md](references/ruby_script_spec.md) when adding
   a Ruby script.
+- Use the `skills-spec` MCP server (`httpUrl: https://agentskills.io/mcp`) to query
+  official spec rules and field constraints.
