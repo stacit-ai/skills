@@ -134,6 +134,17 @@ Load the language-specific reference and template before writing:
 - Ruby: read [references/ruby_script_spec.md](references/ruby_script_spec.md),
   load [assets/ruby_script_template.rb](assets/ruby_script_template.rb)
 
+Every script in `scripts/` must be introduced in `SKILL.md` with a markdown relative
+link at its **first mention**, before any invocation example:
+
+```markdown
+Use [`scripts/validate.py`](scripts/validate.py) to check the output format.
+```
+
+This signals to the agent that the path is relative to the skill directory root, not
+the consuming project's root. Without the link, `scripts/foo.py` in a code block is
+ambiguous.
+
 All scripts must follow these rules regardless of language:
 
 - **No interactive prompts** — agents run in non-interactive shells; TTY prompts hang
