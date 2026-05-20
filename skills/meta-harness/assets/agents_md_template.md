@@ -43,14 +43,16 @@ this table — any file not listed here is invisible to agents entering via AGEN
 ## Keep in Sync
 
 *(For Light projects: embed the sync table below. When the table would overflow the
-AGENTS.md budget, move sync rules to a workflow file and leave pointer lines here
-instead — for example: `- When adding a new API endpoint, see WORKFLOW.md §API
-Conventions`. For Medium projects: replace this section with a single pointer row in
-the when-to-read-what table pointing to a dedicated sync reference file. For
-Thick/Active projects: remove this section; consistency is maintained by per-concern
-sync skills created with the `harness-sync` skill — loaded automatically by the agent
-framework. When a new consistency concern arises, use `harness-sync` to create a
-dedicated sync skill.)*
+AGENTS.md budget, move detailed sync rules to a workflow or reference file and leave
+per-concern pointer lines here instead — each with its own trigger condition, for
+example: `- When adding a new API endpoint, see WORKFLOW.md §API Conventions`. For
+Medium projects: replace the detailed table with per-concern pointer rows in the
+when-to-read-what table, each with its own trigger condition and pointing to the
+dedicated sync reference file or section for that concern; do not use a single
+generic pointer row for all sync concerns. For Thick/Active projects: remove this
+section; consistency is maintained by per-concern sync skills created with the
+`harness-sync` skill — loaded automatically by the agent framework. When a new
+consistency concern arises, use `harness-sync` to create a dedicated sync skill.)*
 
 | When this changes | Update this |
 |---|---|
