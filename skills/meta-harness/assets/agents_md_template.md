@@ -23,8 +23,10 @@
 
 ## When to Read What
 
-Every harness file must appear in this table. Agents discover harness files through
-this table — any file not listed here is invisible to agents entering via AGENTS.md.
+Every harness layer or domain must be discoverable through this table. For
+multi-file domains, a hierarchical folder pointer is sufficient — list the folder,
+not every file within it. Any layer not represented here is invisible to agents
+entering via AGENTS.md.
 
 | Read | When |
 |---|---|
