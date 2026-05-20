@@ -162,7 +162,17 @@ All scripts must follow these rules regardless of language:
 
 ### 5. Add References and Assets (if needed)
 
-Reference files go in `references/`. One topic per file.
+Reference files go in `references/`. **Split by branching condition, not by topic.**
+
+The agent reads SKILL.md first, then progressively loads reference files only when
+their specific condition is met. Design the split around *when* the agent needs the
+information, not *what* it covers:
+
+- Identify the mutually exclusive branches in the skill's workflow
+- Create one reference file per branch that requires additional detail
+- Content always needed together for one branch belongs in one file, even if it spans
+  multiple sub-topics
+- Content needed regardless of branch belongs in SKILL.md body, not `references/`
 
 In `SKILL.md`, every load instruction must specify a precise trigger condition:
 
@@ -204,6 +214,10 @@ Load [references/spec_hard_rules.md](references/spec_hard_rules.md) if any check
   `assets/` mislead agents into expecting files that don't exist
 - **Reference load instructions require precise trigger conditions** — "when X" not
   "see references/"; without a condition the agent loads everything every run
+- **Reference files split by branching condition, not topic** — content always needed
+  together for one branch belongs in one file even if it spans multiple sub-topics;
+  splitting by topic creates files that are either all loaded at once (negating
+  progressive disclosure) or can never be assigned a clean single-condition trigger
 - **Script templates must be structural boilerplate only** — including implementation
   logic causes agents to produce template variants; only shebang, metadata block,
   arg-parsing scaffold, and I/O routing are invariant

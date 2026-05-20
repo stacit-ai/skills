@@ -50,6 +50,9 @@ Without this skill, an agent would likely:
 - Write a `description` that covers only the explicit domain name, missing indirect
   trigger phrasings
 - Load reference files unconditionally, defeating progressive disclosure
+- Split reference files by sub-topic rather than by branching condition, causing
+  either all files to load simultaneously (defeating progressive disclosure) or files
+  that can never be assigned a clean when-to-load trigger
 - Write templates that over-constrain output by specifying content rather than structure
 - Embed repo-internal steps in the generated `SKILL.md` body — for example, "create
   `docs/specs/<name>.md` first" or "run `validate_harness.py`" — making the skill
@@ -114,6 +117,10 @@ All gotchas in `SKILL.md` must come from confirmed failure modes, not generic ad
 8. Embedding repo-internal steps in generated `SKILL.md` (e.g. "create
    `docs/specs/<name>.md`", "run `validate_harness.py`") → skill becomes unusable
    when deployed outside this repository where those files and scripts do not exist
+9. Reference files split by topic instead of branching condition → files are either
+   always loaded together (same effect as putting content in SKILL.md) or cannot be
+   assigned a single clean when-to-load condition; each file must correspond to
+   exactly one decision branch
 
 ## Quality Bar
 
