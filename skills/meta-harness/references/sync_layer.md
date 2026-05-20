@@ -104,7 +104,7 @@ Consider upgrading to skill-based when any of these is true:
 - [ ] Active governance mode is being enabled
 
 To upgrade: load
-[`../references/active_governance.md`](active_governance.md) and follow the
+[`active_governance.md`](active_governance.md) and follow the
 Harness-Sync section. The upgrade creates one dedicated `.agents/skills/<concern>-sync/`
 skill per domain using the `harness-sync` meta-skill; no AGENTS.md entries are needed
 for the resulting skills.
