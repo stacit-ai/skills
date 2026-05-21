@@ -53,7 +53,7 @@ Verify the completed `DESIGN.md` structure, syntax, and accessibility:
 - **Reference Wrapping**: Token references MUST be wrapped in curly braces (e.g., `"{colors.primary}"`). Forgetting braces (e.g., `colors.primary`) is treated as a literal string.
 - **Canon Sequence**: Sections are strictly ordered. Even if some sections are omitted, those present must follow the canonical sequence. Placing a `## Layout` section before `## Colors` will trigger a lint warning.
 - **Component Token Boundaries**: Property names under component keys are restricted to the standard set: `backgroundColor`, `textColor`, `typography`, `rounded`, `padding`, `size`, `height`, `width`. Standardize on these keys; other keys will trigger warnings.
-- **Numeric Font Weights**: The `fontWeight` property in typography must be a number (e.g., `400`, `600`, `700`) rather than strings like `"bold"` or `"regular"`.
+- **Numeric Font Weights**: The `fontWeight` property in typography must use a numeric weight (e.g., `400`, `600`, `700`). Do not use named string values like `"bold"` or `"regular"`; quoted numeric values are acceptable if allowed by the token schema.
 - **WCAG Contrast Ratios**: A primary button or text container defining `backgroundColor` and `textColor` must meet the WCAG AA minimum contrast ratio of 4.5:1. Ensure accessible combinations are chosen.
 - **Non-Interactive npx execution**: When validating or exporting using the CLI in agent environments, always append the `-y` flag (e.g., `npx -y @google/design.md`) to bypass any package installation prompts.
 
