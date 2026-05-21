@@ -6,7 +6,7 @@
 # ]
 # requires-python = ">=3.11"
 # ///
-"""Scan text or a file for PII entities using presidio-analyzer.
+"""Scan one or more files (or inline text) for PII entities using presidio-analyzer.
 
 On systems without CUDA, invoke via:
   uv run --extra-index-url https://download.pytorch.org/whl/cpu --with torch \\
@@ -133,22 +133,31 @@ def _scan(text: str, language: str, score_threshold: float) -> list[dict]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Scan text or a file for PII entities using presidio-analyzer.",
+        description="Scan one or more files (or inline text) for PII entities using presidio-analyzer.",
         epilog=(
             "Examples:\n"
             "  # CUDA available:\n"
             "  uv run scripts/pii_scan.py --text 'Call me at +1-555-123-4567'\n"
             "  uv run scripts/pii_scan.py --file src/users.csv\n"
+            "  uv run scripts/pii_scan.py --file a.py b.py c.py\n"
             "\n"
             "  # No CUDA (CPU-only torch):\n"
             "  uv run --extra-index-url https://download.pytorch.org/whl/cpu \\\n"
-            "    --with torch scripts/pii_scan.py --file data.txt"
+            "    --with torch scripts/pii_scan.py --file data.txt logs/app.log"
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument("--text", metavar="TEXT", help="Inline text to scan.")
-    group.add_argument("--file", metavar="FILE", help="Path to a text file to scan.")
+    parser.add_argument(
+        "--text",
+        metavar="TEXT",
+        help="Inline text to scan.",
+    )
+    parser.add_argument(
+        "--file",
+        nargs="+",
+        metavar="FILE",
+        help="One or more file paths to scan.",
+    )
     parser.add_argument(
         "--language",
         default="en",
@@ -164,33 +173,48 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    if args.file:
-        path = Path(args.file)
-        if not path.exists():
-            parser.error(f"File not found: {args.file!r}")
-        try:
-            text = path.read_text(encoding="utf-8")
-        except UnicodeDecodeError:
-            print(
-                f"Cannot read {args.file!r}: binary or non-UTF-8 content.",
-                file=sys.stderr,
-            )
-            sys.exit(1)
-        source = args.file
-    else:
-        text = args.text
-        source = "<inline-text>"
+    if args.file is None and args.text is None:
+        parser.error("at least one of --file or --text is required")
 
-    findings = _scan(text, args.language, args.threshold)
+    # Build ordered list of (text_content, source_label) pairs.
+    # Binary / non-UTF-8 files are skipped with a stderr warning.
+    sources: list[str] = []
+    work: list[tuple[str, str]] = []  # (text, label) for scannable items
+
+    if args.file:
+        for path_str in args.file:
+            path = Path(path_str)
+            if not path.exists():
+                parser.error(f"File not found: {path_str!r}")
+            sources.append(path_str)
+            try:
+                text = path.read_text(encoding="utf-8")
+            except UnicodeDecodeError:
+                print(
+                    f"Skipping {path_str!r}: binary or non-UTF-8 content.",
+                    file=sys.stderr,
+                )
+                continue
+            work.append((text, path_str))
+
+    if args.text is not None:
+        sources.append("<inline-text>")
+        work.append((args.text, "<inline-text>"))
+
+    all_findings: list[dict] = []
+    for text, label in work:
+        for finding in _scan(text, args.language, args.threshold):
+            finding["source"] = label
+            all_findings.append(finding)
 
     print(
         json.dumps(
             {
-                "source": source,
+                "sources": sources,
                 "language": args.language,
                 "score_threshold": args.threshold,
-                "finding_count": len(findings),
-                "findings": findings,
+                "finding_count": len(all_findings),
+                "findings": all_findings,
             },
             indent=2,
         )
