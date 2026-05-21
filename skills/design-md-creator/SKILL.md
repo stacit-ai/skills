@@ -49,7 +49,7 @@ Verify the completed `DESIGN.md` structure, syntax, and accessibility:
 
 ## Gotchas
 
-- **Strict Hex Format**: All color values in the YAML front matter must strictly be in SRGB `#` + hex format (e.g. `"#1A1C1E"`). Short hexes (e.g. `"#fff"`) or functions (e.g. `rgb()`, `hsl()`) are invalid and fail linting.
+- **Strict Hex Format**: All color values in the YAML front matter must strictly be in sRGB `#` + hex format (e.g. `"#1A1C1E"`). Short hexes (e.g. `"#fff"`) or functions (e.g. `rgb()`, `hsl()`) are invalid and fail linting.
 - **Reference Wrapping**: Token references MUST be wrapped in curly braces (e.g., `"{colors.primary}"`). Forgetting braces (e.g., `colors.primary`) is treated as a literal string.
 - **Canon Sequence**: Sections are strictly ordered. Even if some sections are omitted, those present must follow the canonical sequence. Placing a `## Layout` section before `## Colors` will trigger a lint warning.
 - **Component Token Boundaries**: Property names under component keys are restricted to the standard set: `backgroundColor`, `textColor`, `typography`, `rounded`, `padding`, `size`, `height`, `width`. Standardize on these keys; other keys will trigger warnings.
