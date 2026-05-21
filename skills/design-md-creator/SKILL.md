@@ -32,7 +32,7 @@ Establish the machine-readable design system tokens in the YAML front matter:
 
 ### Step 3 — Compose Prose & Visual Rationale (Markdown)
 Develop the human-readable Markdown body that provides context and guidance on how to apply the tokens:
-1.  **canonical Order**: Write the visual rationale sections using `##` headings in exact sequence: `Overview`, `Colors`, `Typography`, `Layout`, `Elevation & Depth`, `Shapes`, `Components`, `Do's and Don'ts`.
+1.  **Canonical Order**: Write the visual rationale sections using `##` headings in exact sequence: `Overview`, `Colors`, `Typography`, `Layout`, `Elevation & Depth`, `Shapes`, `Components`, `Do's and Don'ts`.
 2.  **Write Prose Description**: In each section, explain the "why" and "how" behind the tokens, providing rules for when and where each token should be utilized.
 3.  *Actionable Guidance*: For details on section writing rules, aliases, and examples, load [references/sections.md](references/sections.md).
 
