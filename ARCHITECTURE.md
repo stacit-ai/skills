@@ -13,22 +13,27 @@ docs/                ← knowledge base for this repository
 .github/
   workflows/         ← CI pipeline definitions (GitHub Actions)
 scripts/             ← repo-level validators and formatters (Python/uv or Deno only)
-.agents/skills/      ← symlink → ../skills; allows skills here to load each other
-AGENTS.md            ← agent entry point; map only (target 50–100 lines, hard limit 120)
+.agents/skills/      ← real directory; each skills/<name>/ is symlinked here
+                       individually; repo-specific skills may be created here directly
+AGENTS.md            ← agent entry point; map only (target 50–100 lines, hard limit 150)
 ARCHITECTURE.md      ← this file
 ```
 
 ## Key Invariants
 
 **Skill–spec pairing:** For every directory `skills/<name>/`, a file
-`docs/specs/<name>.md` must exist. Names must match exactly. Create the spec file
-before or alongside the skill directory.
+`docs/specs/<name>.md` must exist. Names must match exactly. Spec files have no
+mandatory section headings or format — their purpose is to clarify the skill's goal
+and provide authoring context.
 
 **Flat skills layout:** `skills/` contains only top-level skill directories. No skill
 nested inside another skill directory. Each skill directory must contain `SKILL.md`.
 
-**Symlink target:** `.agents/skills` is a symlink to `../skills`. Do not add files here
-directly; modify `skills/` instead.
+**Per-skill symlinks:** `.agents/skills/` is a real directory. Each `skills/<name>/`
+has a corresponding symlink `.agents/skills/<name> → ../../skills/<name>`. This allows
+repo-specific skills to be created as real directories directly inside `.agents/skills/`
+alongside the symlinked entries. Do not replace `.agents/skills/` with a single
+directory symlink.
 
 ## Skill Directory Structure
 
@@ -68,7 +73,7 @@ runtime (`uv` or `deno`).
 
 ## AGENTS.md Size Budget
 
-Target: 50–100 lines. Hard limit: 120 lines. Exceeding the limit means content should
+Target: 50–100 lines. Hard limit: 150 lines. Exceeding the limit means content should
 move to `docs/` with a pointer added to AGENTS.md. Enforced by
 `scripts/validate_harness.py` (structural validator).
 

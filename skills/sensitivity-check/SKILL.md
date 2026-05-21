@@ -76,8 +76,8 @@ Use the output to decide how to run [`pii_scan.py`](scripts/pii_scan.py):
 
 | Result | Invocation |
 |---|---|
-| Exit 0 with output (CUDA present) | `uv run scripts/pii_scan.py --file FILE [--language en]` |
-| Empty output or non-zero exit (no CUDA) | `uv run --extra-index-url https://download.pytorch.org/whl/cpu --with torch scripts/pii_scan.py --file FILE [--language en]` |
+| Exit 0 with output (CUDA present) | `uv run scripts/pii_scan.py --file FILE [FILE ...] [--language en]` |
+| Empty output or non-zero exit (no CUDA) | `uv run --extra-index-url https://download.pytorch.org/whl/cpu --with torch scripts/pii_scan.py --file FILE [FILE ...] [--language en]` |
 
 **If `uv run` fails entirely for `pii_scan.py`**, fall back to regex-based detection
 using `grep -E` or Python stdlib `re` (no external dependencies). Minimum patterns
@@ -155,7 +155,7 @@ section. The **Conclusion** must end with one of:
 
 ## Gotchas
 
-- **Route before scanning** — calling `pii_scan.py` on a multi-MB file without
+- **Route before scanning** — calling `pii_scan.py` on multiple large files without
   routing first will consume the entire context budget.
 - **CUDA check must use `nvidia-smi`, not Python** — `torch.cuda.is_available()`
   cannot run before torch is installed; the shell command works in all environments.

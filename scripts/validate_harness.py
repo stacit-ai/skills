@@ -22,7 +22,7 @@ REQUIRED_ROOT_FILES = ["AGENTS.md", "ARCHITECTURE.md"]
 REQUIRED_DOCS_FILES = ["docs/QUALITY.md", "docs/WORKFLOW.md", "docs/REFERENCES.md", "docs/SECURITY.md"]
 
 AGENTS_MD_WARN = 100
-AGENTS_MD_LIMIT = 120
+AGENTS_MD_LIMIT = 150
 
 ALLOWED_SCRIPT_SUFFIXES = {".py", ".ts"}
 
@@ -55,18 +55,7 @@ def check(root: Path) -> tuple[list[str], list[str]]:
                 f"AGENTS.md  {n} lines; approaching hard limit {AGENTS_MD_LIMIT}"
             )
 
-    # .agents/skills symlink
-    link = root / ".agents" / "skills"
-    if not link.is_symlink():
-        errors.append("MISSING  .agents/skills symlink")
-    else:
-        target = os.readlink(link)
-        if target != "../skills":
-            warnings.append(
-                f".agents/skills points to '{target}'; expected '../skills'"
-            )
-
-    # Collect skill and spec names for bidirectional pairing check
+    # Collect skill and spec names
     skills_dir = root / "skills"
     skill_names: set[str] = set()
     if skills_dir.is_dir():
@@ -84,11 +73,39 @@ def check(root: Path) -> tuple[list[str], list[str]]:
             if e.is_file() and e.suffix == ".md" and not e.name.startswith(".")
         }
 
-    # Bidirectional spec <-> skill pairing
+    # .agents/skills/ must be a real directory with per-skill symlinks
+    agents_skills_dir = root / ".agents" / "skills"
+    if not agents_skills_dir.exists():
+        errors.append("MISSING  .agents/skills/ directory")
+    elif agents_skills_dir.is_symlink():
+        errors.append(
+            "STRUCTURE  .agents/skills/ must be a real directory, not a symlink;"
+            " use per-skill symlinks instead"
+        )
+    else:
+        for name in sorted(skill_names):
+            link = agents_skills_dir / name
+            if not link.exists() and not link.is_symlink():
+                errors.append(f"MISSING  .agents/skills/{name} symlink")
+            elif not link.is_symlink():
+                errors.append(
+                    f"STRUCTURE  .agents/skills/{name} must be a symlink"
+                    f" to ../../skills/{name}"
+                )
+            else:
+                target = os.readlink(link)
+                expected = f"../../skills/{name}"
+                if target != expected:
+                    warnings.append(
+                        f".agents/skills/{name} points to '{target}';"
+                        f" expected '{expected}'"
+                    )
+
+    # Spec <-> skill pairing
     for name in sorted(skill_names - spec_names):
         errors.append(f"MISSING  docs/specs/{name}.md  (no spec for skills/{name}/)")
     for name in sorted(spec_names - skill_names):
-        errors.append(f"MISSING  skills/{name}/  (no skill for docs/specs/{name}.md)")
+        warnings.append(f"ORPHAN  docs/specs/{name}.md has no matching skills/{name}/")
 
     # Per-skill structural checks
     if skills_dir.is_dir():

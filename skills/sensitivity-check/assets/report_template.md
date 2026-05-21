@@ -16,21 +16,14 @@
 
 ## Findings
 
-{For each item with findings, use the block below. If an item has no findings, write:
-"**{item}** — No findings."}
+{If no findings across all items, write: "No findings."}
 
----
-
-### {file path or "inline text"}
-
-| # | Severity | Type | Location | Excerpt | Status |
-|---|---|---|---|---|---|
-| 1 | {Critical / High / Medium / Low} | {entity type} | {Line N / Char N–N} | `{excerpt with sensitive value in [brackets]}` | {Confirmed / False Positive} |
+| # | Source | Severity | Type | Location | Excerpt | Status |
+|---|---|---|---|---|---|---|
+| 1 | {file path or "inline text"} | {Critical / High / Medium / Low} | {entity type} | {Line N / Char N–N} | `{excerpt with sensitive value in [brackets]}` | {Confirmed / False Positive} |
 
 **Finding #1 — False Positive Reason** *(include only when Status = False Positive)*:
 {Reason, e.g., "Example email address in documentation; labeled as illustrative."}
-
----
 
 ## False Positives Summary
 
