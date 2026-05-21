@@ -42,5 +42,5 @@ Out of scope:
 
 ## External Dependencies
 
-- `@google/design.md` CLI tool (invoked via `npx @google/design.md`).
+- `@google/design.md` CLI tool (for agents and other non-interactive environments, invoke via `npx -y @google/design.md`; for interactive/manual use, `npx @google/design.md` also works).
 - W3C Design Tokens Community Group (DTCG) specification.
