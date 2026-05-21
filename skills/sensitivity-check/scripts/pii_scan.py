@@ -186,7 +186,6 @@ def main() -> None:
             path = Path(path_str)
             if not path.exists():
                 parser.error(f"File not found: {path_str!r}")
-            sources.append(path_str)
             try:
                 text = path.read_text(encoding="utf-8")
             except UnicodeDecodeError:
@@ -195,6 +194,7 @@ def main() -> None:
                     file=sys.stderr,
                 )
                 continue
+            sources.append(path_str)
             work.append((text, path_str))
 
     if args.text is not None:
