@@ -15,7 +15,7 @@ docs/                ← knowledge base for this repository
 scripts/             ← repo-level validators and formatters (Python/uv or Deno only)
 .agents/skills/      ← real directory; each skills/<name>/ is symlinked here
                        individually; repo-specific skills may be created here directly
-AGENTS.md            ← agent entry point; map only (target 50–100 lines, hard limit 120)
+AGENTS.md            ← agent entry point; map only (target 50–100 lines, hard limit 150)
 ARCHITECTURE.md      ← this file
 ```
 
