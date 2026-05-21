@@ -19,7 +19,7 @@ Follow these steps when creating or modifying a design system in `DESIGN.md`:
 Before writing any token or prose, gather and inspect existing design contexts in this order:
 1.  **Codebase Styling**: Check for CSS files (e.g., `index.css`, `styles.css`), Tailwind configurations (`tailwind.config.js`), or component folders to identify current color palettes, font families, and shape roundness.
 2.  **User Preferences**: Read user instructions, design mockups, or UI style guides provided in the prompt or repository documentation.
-3.  **Default Palette**: If no brand guidelines exist, choose a cohesive, Harmonious palette (e.g., primary, secondary, neutral) matching the app's domain (e.g., deep blue and warm neutral for enterprise, vibrant emerald for creative/eco-friendly).
+3.  **Default Palette**: If no brand guidelines exist, choose a cohesive, harmonious palette (e.g., primary, secondary, neutral) matching the app's domain (e.g., deep blue and warm neutral for enterprise, vibrant emerald for creative/eco-friendly).
 
 ### Step 2 — Draft the Design Tokens (YAML)
 Establish the machine-readable design system tokens in the YAML front matter:
