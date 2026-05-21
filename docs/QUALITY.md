@@ -34,10 +34,10 @@ toolchain. If a skill genuinely requires a specific environment, state the restr
 explicitly in `docs/specs/<name>.md`.
 
 **Document external dependencies in the spec, not the skill body.**
-If a skill depends on an external API, library, component, or service, record its name,
-version constraints, and access requirements in `docs/specs/<name>.md` at authoring
-time. The SKILL.md body must remain self-contained — it must not reference the spec
-file or any other file outside `skills/<name>/`.
+If a skill depends on an external API, library, component, or service, the spec file
+(`docs/specs/<name>.md`) is the appropriate place to record its name, version
+constraints, and access requirements. The SKILL.md body must remain self-contained —
+it must not reference the spec file or any other file outside `skills/<name>/`.
 
 ## SKILL.md Structural Constraints
 
@@ -78,10 +78,15 @@ Scripts inside `skills/<name>/scripts/` must:
 If a skill bundles scripts, the `SKILL.md` metadata must briefly note the required
 runtime (`uv` or `deno`).
 
-## Spec Requirement
+## Spec Files
 
-Every `skills/<name>/` must have a corresponding `docs/specs/<name>.md` defining its
-purpose and target trigger conditions before the skill is considered complete.
+Every `skills/<name>/` must have a corresponding `docs/specs/<name>.md`. Spec files
+clarify the skill's goal and provide context useful during authoring or future
+revisions — they are not a formal format requirement and have no mandatory section
+headings or structure.
+
+Common content: the skill's intended trigger conditions, scope boundaries, and any
+external dependencies.
 
 ## Review Checklist
 

@@ -10,12 +10,13 @@ LLM loads to perform a class of tasks. Skills are authored, reviewed, and mainta
 ```
 skills/              ← installable skills; flat — one directory per skill name
 docs/                ← knowledge base for this repository
-  specs/             ← per-skill intent definitions; one file per skill
+  specs/             ← per-skill intent; one file per skill (docs/specs/<name>.md)
   QUALITY.md         ← acceptance criteria for skills
   WORKFLOW.md        ← authoring and review process
   REFERENCES.md      ← external documentation links
   SECURITY.md        ← secrets, PII, and content safety rules
-.agents/skills/      ← symlink → skills/ (allows skills here to load each other)
+.agents/skills/      ← real directory; each skills/<name> symlinked individually;
+                       repo-specific skills can be created here directly
 .github/workflows/   ← CI pipeline definitions (GitHub Actions)
 scripts/             ← repo-level validators and formatters
 ARCHITECTURE.md      ← structural rules and ownership map
