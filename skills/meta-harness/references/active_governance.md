@@ -115,8 +115,7 @@ description: >
 Agent frameworks load specialized sync skills automatically via their descriptions —
 no AGENTS.md entry is needed for individual sync skills.
 
-**Template:** load
-[assets/harness_sync_template/SKILL.md](../assets/harness_sync_template/SKILL.md)
+**Template:** load [assets/harness_sync_template/SKILL.md](../assets/harness_sync_template/SKILL.md)
 and copy the full `../assets/harness_sync_template/` directory to
 `.agents/skills/harness-sync/`. Customize the naming patterns and description trigger
 paths to match this project's directory structure.
