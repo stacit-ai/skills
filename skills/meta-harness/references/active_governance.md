@@ -115,48 +115,91 @@ description: >
 Agent frameworks load specialized sync skills automatically via their descriptions —
 no AGENTS.md entry is needed for individual sync skills.
 
-**harness-sync SKILL.md outline:**
-
-```markdown
----
-name: harness-sync
-description: >
-  Create a dedicated consistency skill for a sync concern that lacks one. Use when a
-  new consistency need is identified that has no corresponding sync skill, or when a
-  reference-based sync rule has grown complex enough to warrant a skill.
----
-
-# Harness Sync (Meta-Skill)
-
-## When to Use
-Use when a new consistency concern arises — a new module type, convention, or
-integration that requires coordinated updates across files.
-
-## Creating a Specialized Sync Skill
-1. Identify the concern: what must stay consistent, and between which files or dirs?
-2. Load [assets/project_skill_template.md](../assets/project_skill_template.md)
-3. Create `.agents/skills/<concern>-sync/SKILL.md` with:
-   - `description`: names the concern and lists trigger paths/conditions
-   - Workflow: steps for detecting and correcting drift in that concern
-   - Gotchas: non-obvious coupling or ordering requirements
-4. Log the new skill in `HARNESS_EVOLUTION.md`
-
-## Naming Patterns
-
-| Concern | Skill name | Description trigger example |
-|---|---|---|
-| API spec ↔ implementation | `api-spec-sync` | `spec/` or `endpoints/` modified |
-| Harness ↔ project structure | `harness-self-sync` | `AGENTS.md` or `.agents/` modified |
-| Requirements ↔ tests | `req-test-sync` | `spec/` or `test/` modified |
-
-## Gotchas
-- Each skill covers exactly one concern — do not merge concerns into one skill
-- Specialized sync skills load automatically; no AGENTS.md entries needed
-```
+**Template:** load [assets/harness_sync_template/SKILL.md](../assets/harness_sync_template/SKILL.md)
+and copy the full `../assets/harness_sync_template/` directory to
+`.agents/skills/harness-sync/`. Customize the naming patterns and description trigger
+paths to match this project's directory structure.
 
 **Document in AGENTS.md governance block:**
 
 ```markdown
 **Consistency:** when a new consistency concern arises that lacks a dedicated sync
 skill, use the `harness-sync` skill to create one.
+```
+
+---
+
+## Active Governance Meta-Skill Set
+
+In Active mode, harness self-evolution should be **framework-driven**, not
+memory-dependent. Accomplish this by creating a set of meta-skills in
+`.agents/skills/` whose `description` fields cause the framework to auto-load them
+at precisely the right moment — when a behavior repeats, when a workflow grows complex,
+or when a task changes project behavior.
+
+**Create all four meta-skills when enabling Active governance.** They are
+auto-discovered via their `description` fields; no AGENTS.md entry is needed for any
+of them.
+
+To create a meta-skill, copy the full template directory to
+`.agents/skills/<name>/`, then generate a patch that fills in all `[insert ...]`
+markers with project-specific values:
+
+| Meta-skill | Template |
+|---|---|
+| `skill-refine` | [assets/skill_refine_template/SKILL.md](../assets/skill_refine_template/SKILL.md) |
+| `workflow-promote` | [assets/workflow_promote_template/SKILL.md](../assets/workflow_promote_template/SKILL.md) |
+| `anti-rot` | [assets/anti_rot_template/SKILL.md](../assets/anti_rot_template/SKILL.md) |
+| `harness-sync` | [assets/harness_sync_template/SKILL.md](../assets/harness_sync_template/SKILL.md) |
+
+---
+
+### `skill-refine` — Autonomous Skill Distillation
+
+Handles the 3× rule end-to-end without requiring the agent to recall the rule from
+memory. Load [assets/skill_refine_template/SKILL.md](../assets/skill_refine_template/SKILL.md)
+and deploy to `.agents/skills/skill-refine/`.
+
+---
+
+### `workflow-promote` — Workflow → Skill Upgrade
+
+Prevents workflow sections from growing unwieldy by upgrading them to skills before
+they become hard to maintain. Load
+[assets/workflow_promote_template/SKILL.md](../assets/workflow_promote_template/SKILL.md)
+and deploy to `.agents/skills/workflow-promote/`.
+
+---
+
+### `anti-rot` — Post-Change Harness Sync
+
+Ensures every functional change is followed by a harness consistency check before the
+task closes. Load [assets/anti_rot_template/SKILL.md](../assets/anti_rot_template/SKILL.md)
+and deploy to `.agents/skills/anti-rot/`.
+
+---
+
+### Summary Table
+
+| Meta-skill | Auto-load trigger (description) | What it does |
+|---|---|---|
+| `skill-refine` | Same behavior executed ≥ 3 times | Distills behavior into a new skill |
+| `workflow-promote` | Workflow section grows complex | Upgrades workflow section to a skill |
+| `anti-rot` | Functional change closes | Runs harness sync check |
+| `harness-sync` | New consistency concern arises | Creates a dedicated per-concern sync skill |
+
+All four are auto-discovered by the framework via their `description` fields.
+**No AGENTS.md entry is needed for any of them.**
+
+Update the AGENTS.md governance block to reference the meta-skill set:
+
+```markdown
+## Governance
+
+**Mode:** Active
+**Skill refinement trigger:** behavior repeated ≥ 3 times across task executions
+**Anti-rot:** `anti-rot` skill runs after every functional change
+**Evolution log:** HARNESS_EVOLUTION.md (newest entries first)
+**Consistency:** `harness-sync` skill creates dedicated per-concern sync skills
+**Meta-skills:** skill-refine, workflow-promote, anti-rot, harness-sync (auto-loaded)
 ```

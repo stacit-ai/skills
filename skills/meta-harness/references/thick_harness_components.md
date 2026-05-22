@@ -144,6 +144,8 @@ recognized naming conventions.
 
 - Describes technical architecture: directory ownership, module boundaries, data
   flow, build and deploy topology
+- Create when requested or when AGENTS.md structural
+  content would exceed its line budget (move the overflow content here)
 - Include: component diagram or tree, ownership map, non-obvious dependencies,
   cross-cutting concerns (logging, auth, error handling)
 - Agents load this when making structural changes, adding new modules, or resolving

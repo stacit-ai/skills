@@ -23,16 +23,19 @@
 
 ## When to Read What
 
-Every harness layer or domain must be discoverable through this table. For
-multi-file domains, a hierarchical folder pointer is sufficient — list the folder,
-not every file within it. Any layer not represented here is invisible to agents
-entering via AGENTS.md.
+KB files, workflow files, spec files, plan files, and root-level convention files
+(ARCHITECTURE.md, DESIGN.md) are not auto-discovered — include them here so agents
+entering via AGENTS.md know to look for them. For multi-file domains a folder pointer
+is sufficient; listing every individual file is not required.
+
+Skills, hooks, and MCP configs are **auto-discovered** by the agent framework via
+their `description` fields or placement locations — omit them from this table (the
+framework loads them without harness registration).
 
 | Read | When |
 |---|---|
 | `ARCHITECTURE.md` | when making structural or cross-cutting changes |
 | `DESIGN.md` | when generating or reviewing UI code *(omit if no UI)* |
-| `.agents/skills/[name]/` | [specific task this skill covers] |
 | `.agents/knowledge/[file]` | [specific question or task] |
 | `WORKFLOW.md` or `workflow/[file]` | [specific operation this SOP covers] |
 | `SPEC.md` or `spec/` | when implementing features or clarifying scope |
