@@ -36,7 +36,7 @@ Load this skill when any of the following is true:
    the same.
 2. Confirm scope: the behavior is self-contained and not better served by updating
    an existing skill.
-3. Load [assets/project_skill_template.md](assets/project_skill_template.md), then
+3. Load [assets/skill_template.md](assets/skill_template.md), then
    create `.agents/skills/<name>/SKILL.md` with the distilled procedure.
 4. Log the new skill in `[insert path to evolution log]` (create it from the harness
    evolution template if it does not yet exist).

@@ -34,7 +34,7 @@ Load this skill when any of the following is true:
 ## Workflow
 
 1. Identify the section to promote: file path + section heading.
-2. Load [assets/project_skill_template.md](assets/project_skill_template.md), then
+2. Load [assets/workflow_template.md](assets/workflow_template.md), then
    create `.agents/skills/<name>/SKILL.md` with:
    - `description`: trigger conditions derived from the section's When-to-run text
    - Workflow steps migrated and tightened from the source section
