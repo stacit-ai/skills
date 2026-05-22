@@ -145,8 +145,8 @@ fully restructuring AGENTS.md.
 - Trigger to create: a workflow is repeatable and benefits from constraint or guidance;
   or the 3× rule has fired (Active mode)
 - Auto-discovered: agent frameworks load skills automatically via their `description`
-  field — do not list individual skills in AGENTS.md or any other harness document;
-  the framework discovers them without explicit registration
+  field — no AGENTS.md skill listing is needed for framework loading; the framework
+  discovers skills without explicit registration
 - `WORKFLOW.md` or `workflow/` is a lighter alternative when full skill structure is
   not warranted: plain SOP text, referenced from AGENTS.md with file + section heading
   (e.g., 'see WORKFLOW.md §Deploy Process' or 'search for `## Deploy Process` in WORKFLOW.md')
@@ -201,7 +201,6 @@ creating a new KB document.
 - Auto-loaded: MCP servers are loaded from framework-specific config files
   (e.g., `.mcp.json`, `mcp_servers.json`) — do not list MCP servers in AGENTS.md;
   the framework discovers them from config without explicit harness registration
-- Mandatory confirmation: always confirm with user before creating any MCP config
 - Load [references/connectivity_mcp_security.md](references/connectivity_mcp_security.md)
   before writing any connectivity component
 

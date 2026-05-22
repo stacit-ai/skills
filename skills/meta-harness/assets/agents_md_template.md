@@ -30,8 +30,7 @@ is sufficient; listing every individual file is not required.
 
 Skills, hooks, and MCP configs are **auto-discovered** by the agent framework via
 their `description` fields or placement locations — omit them from this table (the
-framework loads them without harness registration). You may include a skill row as
-human-readable context, but it is not required for framework loading.
+framework loads them without harness registration).
 
 | Read | When |
 |---|---|

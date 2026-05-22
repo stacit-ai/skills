@@ -115,9 +115,10 @@ description: >
 Agent frameworks load specialized sync skills automatically via their descriptions —
 no AGENTS.md entry is needed for individual sync skills.
 
-**Template:** load [assets/harness_sync_template/SKILL.md](../assets/harness_sync_template/SKILL.md),
-copy the directory to `.agents/skills/harness-sync/`, then fill all `[insert ...]` markers.
-Customize the naming patterns and description trigger paths to match this project's directory structure.
+**Template:** load [assets/harness_sync_template/SKILL.md](../assets/harness_sync_template/SKILL.md)
+and copy the full `../assets/harness_sync_template/` directory to
+`.agents/skills/harness-sync/`. Customize the naming patterns and description trigger
+paths to match this project's directory structure.
 
 **Document in AGENTS.md governance block:**
 
@@ -140,10 +141,9 @@ or when a task changes project behavior.
 auto-discovered via their `description` fields; no AGENTS.md entry is needed for any
 of them.
 
-To create a meta-skill, copy the template `SKILL.md` to
-`.agents/skills/<name>/SKILL.md` and the `assets/` subdirectory to
-`.agents/skills/<name>/assets/`, then generate a patch that fills in all
-`[insert ...]` markers with project-specific values:
+To create a meta-skill, copy the full template directory to
+`.agents/skills/<name>/`, then generate a patch that fills in all `[insert ...]`
+markers with project-specific values:
 
 | Meta-skill | Template |
 |---|---|
