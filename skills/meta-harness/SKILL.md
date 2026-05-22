@@ -87,6 +87,14 @@ Create or update files per the plan. Load asset templates when creating new file
   [assets/project_skill_template.md](assets/project_skill_template.md)
 - Creating a knowledge base document → load
   [assets/knowledge_entry_template.md](assets/knowledge_entry_template.md)
+- Enabling Active governance (creating meta-skills) → for each meta-skill, load the
+  corresponding template directory, copy directory to
+  `.agents/skills/<name>`, then generate a patch that replaces all
+  `[insert ...]` markers and adapts the skill content to fit this project:
+  - `skill-refine`: [assets/skill_refine_template](assets/skill_refine_template)
+  - `workflow-promote`: [assets/workflow_promote_template](assets/workflow_promote_template)
+  - `anti-rot`: [assets/anti_rot_template](assets/anti_rot_template)
+  - `harness-sync`: [assets/harness_sync_template](assets/harness_sync_template)
 
 ### 7. Verify
 
@@ -122,7 +130,8 @@ These live at the project root (not inside `.agents/`):
 - **`AGENTS.md`** — harness entry point; must list every other harness file so agents
   know to look for them; budget ≤ 100 lines target, ≤ 150 hard limit
 - **`ARCHITECTURE.md`** — technical architecture: directory ownership, module
-  boundaries, build/deploy topology; load when making structural or cross-cutting changes
+  boundaries, build/deploy topology; create when requested or when AGENTS.md structural content would exceed the line budget (move
+  the overflow here); load when making structural or cross-cutting changes
 - **`DESIGN.md`** — frontend visual spec following the
   [Stitch design-md format](https://stitch.withgoogle.com/docs/design-md/overview.md);
   create only for projects with a visual/UI component
@@ -135,6 +144,9 @@ fully restructuring AGENTS.md.
 - Location: `.agents/skills/<name>/` — every project-specific skill, no exceptions
 - Trigger to create: a workflow is repeatable and benefits from constraint or guidance;
   or the 3× rule has fired (Active mode)
+- Auto-discovered: agent frameworks load skills automatically via their `description`
+  field — do not list individual skills in AGENTS.md or any other harness document;
+  the framework discovers them without explicit registration
 - `WORKFLOW.md` or `workflow/` is a lighter alternative when full skill structure is
   not warranted: plain SOP text, referenced from AGENTS.md with file + section heading
   (e.g., 'see WORKFLOW.md §Deploy Process' or 'search for `## Deploy Process` in WORKFLOW.md')
@@ -174,6 +186,10 @@ creating a new KB document.
 
 - Runtime callbacks for correcting specific, documented recurring error patterns
 - Determine hook mechanism from the agent framework in use; omit if unsupported
+- Auto-loaded: hooks are activated by the framework based on their placement in
+  framework-specific locations (e.g., `.cursor/rules/`, `.github/copilot-instructions.md`,
+  `CLAUDE.md`) — do not list hooks in AGENTS.md; the framework loads them automatically
+  for all relevant operations without registration
 - Load [references/thick_harness_components.md](references/thick_harness_components.md)
   for hook placement rules by framework
 
@@ -182,6 +198,10 @@ creating a new KB document.
 - Principle: grant only the tools/resources required for declared tasks — no speculative
   access, no capability creep
 - **Mandatory confirmation**: always confirm with user before creating any MCP config
+- Auto-loaded: MCP servers are loaded from framework-specific config files
+  (e.g., `.mcp.json`, `mcp_servers.json`) — do not list MCP servers in AGENTS.md;
+  the framework discovers them from config without explicit harness registration
+- Mandatory confirmation: always confirm with user before creating any MCP config
 - Load [references/connectivity_mcp_security.md](references/connectivity_mcp_security.md)
   before writing any connectivity component
 
@@ -201,14 +221,7 @@ Select based on harness thickness and project duration:
 **Passive mode**: maintain existing harness consistency only. No autonomous component
 creation. Flag stale content to the user; do not auto-modify.
 
-**Active mode**: agent autonomously refines harness when:
-
-- A behavior repeats ≥ 3 times → distill into a new project skill
-- A Gotcha is corrected → propagate to the relevant SKILL.md immediately
-- A component becomes stale → update or remove in the same commit as the change
-
-Load [references/active_governance.md](references/active_governance.md) when setting
-governance mode to Active.
+**Active mode**: agent autonomously refines harness. When enabling Active mode, follow [references/active_governance.md](references/active_governance.md) to create a self-maintaining harness engineering architectural layer.
 
 Document the selected mode and its triggers in AGENTS.md or a KB file. An undocumented
 governance mode is the same as no governance mode.
