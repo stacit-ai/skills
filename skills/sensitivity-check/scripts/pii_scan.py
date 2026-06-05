@@ -3,6 +3,7 @@
 # dependencies = [
 #   "presidio-analyzer>=2.2,<3",
 #   "spacy>=3.7,<4",
+#   "click>=8.4.1",
 # ]
 # requires-python = ">=3.11"
 # ///
