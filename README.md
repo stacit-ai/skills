@@ -43,10 +43,10 @@ Every skill is a standalone deployable unit: when installed elsewhere, **only**
 
 Start here:
 
-- Agent entry point: `AGENTS.md`
-- Authoring process: `docs/WORKFLOW.md`
-- Acceptance criteria: `docs/QUALITY.md`
-- Security rules (secrets/PII/external content): `docs/SECURITY.md`
+- Agent entry point: [AGENTS.md](AGENTS.md)
+- Authoring process: [docs/WORKFLOW.md](docs/WORKFLOW.md)
+- Acceptance criteria: [docs/QUALITY.md](docs/QUALITY.md)
+- Security rules (secrets/PII/external content): [docs/SECURITY.md](docs/SECURITY.md)
 
 Validation (run before committing):
 
