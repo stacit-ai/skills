@@ -1,4 +1,4 @@
-title = "skillhub PII and Secret Rules"
+title = "skills PII and Secret Rules"
 
 [extend]
 # Keep all built-in gitleaks secret-detection rules and add PII rules on top.
