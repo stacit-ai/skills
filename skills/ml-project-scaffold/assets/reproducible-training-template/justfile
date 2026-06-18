@@ -1,0 +1,29 @@
+default:
+    @just --list
+
+setup:
+    uv sync
+    uvx pre-commit install
+
+check:
+    uvx pre-commit run --all-files
+    uv run pytest -m "not expensive"
+
+format:
+    uv run ruff format .
+    uv run ruff check --fix .
+
+test:
+    uv run pytest -m "not expensive"
+
+test-expensive:
+    uv run pytest -m expensive
+
+train:
+    @echo "Create the training workflow module, then replace this recipe."
+
+eval:
+    @echo "Create the evaluation workflow module, then replace this recipe."
+
+clean-outputs:
+    rm -rf outputs/*

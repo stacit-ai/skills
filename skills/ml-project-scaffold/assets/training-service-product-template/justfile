@@ -1,0 +1,22 @@
+default:
+    @just --list
+
+setup:
+    uvx pre-commit install
+    cd training && uv sync
+
+check:
+    uvx pre-commit run --all-files
+    cd training && uv run pytest -m "not expensive"
+
+check-integration:
+    cd training && uv run pytest ../tests/integration -m "not expensive"
+
+train:
+    @echo "Create the training workflow module, then replace this recipe."
+
+eval:
+    @echo "Create the evaluation workflow module, then replace this recipe."
+
+service-test:
+    @echo "Select a service framework, then replace this command with service tests."

@@ -1,0 +1,26 @@
+default:
+    @just --list
+
+venv:
+    uv venv
+
+compile:
+    uv pip compile requirements.in --output-file requirements.txt --no-annotate --no-emit-index-url
+
+install: venv compile
+    uv pip install -r requirements.txt --torch-backend=auto
+
+install-dev: install
+    uv pip install -r requirements.dev.txt
+
+hooks:
+    uvx pre-commit install
+
+check:
+    uvx pre-commit run --all-files
+
+train:
+    @echo "Create the training workflow, then replace this recipe."
+
+eval:
+    @echo "Create the evaluation workflow, then replace this recipe."
