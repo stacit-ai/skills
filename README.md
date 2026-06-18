@@ -1,6 +1,6 @@
 # Skills
 
-[![Secret Scanning](https://github.com/stacit-ai/skillhub/actions/workflows/secret.yml/badge.svg)](https://github.com/stacit-ai/skillhub/actions/workflows/secret.yml)
+[![Secret Scanning](https://github.com/stacit-ai/skills/actions/workflows/secret.yml/badge.svg)](https://github.com/stacit-ai/skills/actions/workflows/secret.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 Reusable, self-contained **agent skills**: instruction sets that an LLM loads to perform a class
