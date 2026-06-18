@@ -43,7 +43,7 @@ the data layering and harness files when reproducibility is a goal.
   than hard-coding one GPU backend as universal.
 - Use `justfile` as the main command surface. Default target prints command help.
 - Include commands for setup, dependency sync, formatting/checks, lightweight tests,
-  manual expensive tests, training, evaluation, and cleaning ignored outputs.
+  manual slow tests, training, evaluation, and cleaning ignored outputs.
 
 ## Harness Rules
 
@@ -51,7 +51,7 @@ Use progressive harness loading:
 
 - `AGENTS.md` maps the repo and tells agents when to read each knowledge file.
 - `.agents/knowledge/WORKFLOW.md` stores training, evaluation, data preparation, and
-  manual expensive-test workflows.
+  manual slow-test workflows.
 - `.agents/knowledge/QUALITY.md` stores code quality, documentation, test, data, output,
   and git safety rules.
 - `.agents/knowledge/REFERENCES.md` stores framework and tool documentation links.
@@ -133,7 +133,7 @@ minversion = "6.0"
 addopts = "-ra -q"
 testpaths = ["tests"]
 markers = [
-    "expensive: manual-only tests that may require GPU, model downloads, or long runs",
+    "slow: manual-only tests that may require GPU, model downloads, or long runs",
 ]
 
 [tool.ty.src]

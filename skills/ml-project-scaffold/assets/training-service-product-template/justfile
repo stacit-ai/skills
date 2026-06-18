@@ -7,10 +7,10 @@ setup:
 
 check:
     uvx pre-commit run --all-files
-    cd training && uv run pytest -m "not expensive"
+    cd training && uv run pytest -m "not slow"
 
 check-integration:
-    cd training && uv run pytest ../tests/integration -m "not expensive"
+    cd training && uv run pytest ../tests/integration -m "not slow"
 
 train:
     @echo "Create the training workflow module, then replace this recipe."
