@@ -49,7 +49,7 @@ Apply the reproducible training/evaluation rules:
   [references/reproducible-training.md](reproducible-training.md) into the training
   subproject's generated `pyproject.toml`; do not copy a template over it.
 - Data layers under `training/data/`.
-- Lightweight CI and manual-only expensive training checks.
+- Lightweight CI and manual-only slow training checks.
 - Early failure for unexpected training/evaluation states.
 
 ## Service Side

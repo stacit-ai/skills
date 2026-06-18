@@ -7,17 +7,17 @@ setup:
 
 check:
     uvx pre-commit run --all-files
-    uv run pytest -m "not expensive"
+    uv run pytest -m "not slow"
 
 format:
     uv run ruff format .
     uv run ruff check --fix .
 
-test:
-    uv run pytest -m "not expensive"
+test *ARGS:
+    uv run pytest {{ARGS}}
 
-test-expensive:
-    uv run pytest -m expensive
+test-fast *ARGS:
+    uv run pytest -m "not slow" {{ARGS}}
 
 train:
     @echo "Create the training workflow module, then replace this recipe."

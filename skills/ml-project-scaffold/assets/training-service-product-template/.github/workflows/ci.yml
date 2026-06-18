@@ -13,4 +13,4 @@ jobs:
       - uses: astral-sh/setup-uv@v5
       - run: uvx pre-commit run --all-files
       - run: cd training && uv sync
-      - run: cd training && uv run pytest -m "not expensive"
+      - run: cd training && uv run pytest -m "not slow"
