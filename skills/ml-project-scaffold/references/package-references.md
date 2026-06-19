@@ -12,6 +12,25 @@ generated project harness.
 - just: https://just.systems/man/en/
 - pre-commit: https://pre-commit.com/
 
+## uv Integrations
+
+- Jupyter: https://docs.astral.sh/uv/guides/integration/jupyter/
+- marimo: https://docs.astral.sh/uv/guides/integration/marimo/
+- GitHub Actions: https://docs.astral.sh/uv/guides/integration/github/
+- GitLab CI/CD: https://docs.astral.sh/uv/guides/integration/gitlab/
+- GitHub documentation index: https://docs.github.com/llms.txt
+- GitLab documentation index: https://docs.gitlab.com/llms.txt
+- Docker: https://docs.astral.sh/uv/guides/integration/docker/
+- Bazel: https://docs.astral.sh/uv/guides/integration/bazel/
+- pre-commit: https://docs.astral.sh/uv/guides/integration/pre-commit/
+- PyTorch: https://docs.astral.sh/uv/guides/integration/pytorch/
+
+## Secret Scanning
+
+- Gitleaks: https://github.com/gitleaks/gitleaks
+- TruffleHog: https://github.com/trufflesecurity/trufflehog
+- detect-secrets: https://github.com/Yelp/detect-secrets
+
 ## Configuration
 
 - Pydantic Settings: https://pydantic.dev/docs/validation/latest/concepts/pydantic_settings/index.md
@@ -52,3 +71,4 @@ generated project harness.
 - Do not browse every reference during scaffolding. Browse or copy a URL only when
   project requirements make that tool relevant.
 - If the user pins a framework version, prefer the matching versioned documentation URL.
+- Copy integration links only for integrations the generated project actually uses.

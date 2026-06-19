@@ -2,12 +2,24 @@ default:
     @just --list
 
 setup:
-    uvx pre-commit install
     cd training && uv sync
 
 check:
-    uvx pre-commit run --all-files
+    cd training && uv run ruff format --check .
+    cd training && uv run ruff check .
     cd training && uv run pytest -m "not slow"
+
+format:
+    cd training && uv run ruff format .
+
+lint:
+    cd training && uv run ruff check .
+
+test *args:
+    cd training && uv run pytest {{ args }}
+
+test-fast *args:
+    cd training && uv run pytest -m "not slow" {{ args }}
 
 check-integration:
     cd training && uv run pytest ../tests/integration -m "not slow"

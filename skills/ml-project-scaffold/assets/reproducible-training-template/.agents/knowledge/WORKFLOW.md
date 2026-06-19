@@ -3,7 +3,8 @@
 ## Command Surface
 
 Use `just` for repeatable commands. Keep command recipes short; move complex helper
-logic to `scripts/` only when it would make the command runner hard to read.
+logic to `scripts/` only when it would make the command runner hard to read. Keep
+format, lint, test, and aggregate check recipes independently callable and direct.
 
 ## Setup
 
@@ -11,8 +12,10 @@ Default setup:
 
 ```sh
 uv sync
-uvx pre-commit install
 ```
+
+If the project enables Git hooks, document their installation command here and keep it
+aligned with the generated `.pre-commit-config.yaml`.
 
 Document GPU, CUDA, or accelerator-specific install notes here when the project chooses
 a backend. Do not assume one GPU backend works on every machine.
