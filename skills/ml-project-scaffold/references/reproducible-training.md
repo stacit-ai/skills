@@ -110,7 +110,7 @@ docstring-code-line-length = 80
 extend-select = [
     "I",    # isort: Import sorting
     "N",    # pep8-naming: Check PEP 8 naming conventions
-    "TID",  # flake8-tidy-imports: Tidy up imports
+    "TID",  # flake8-tidy-imports: Import policy checks
     "W",    # pycodestyle warning: PEP 8 styling warnings
 ]
 unfixable = [
