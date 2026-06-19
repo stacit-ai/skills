@@ -162,6 +162,8 @@ section. The **Conclusion** must end with one of:
 - **`--extra-index-url` and `--with torch` are `uv run` CLI flags** — place them on
   the command line between `uv run` and the script path; do not add them inside the
   `# /// script` dependency block.
+- **Keep Click as a direct `pii_scan.py` dependency** — Presidio's import chain uses
+  it, but an isolated uv script environment may not install it transitively.
 - **detect-secrets requires a file path** — `secret_scan.py` writes inline text to a
   temp file automatically; do not pipe text via stdin.
 - **presidio-analyzer defaults to English (`en`)** — pass `--language` explicitly for
