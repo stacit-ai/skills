@@ -28,6 +28,7 @@ Every skill is a standalone deployable unit: when installed elsewhere, **only**
 | `meta-harness` | Design and evolve an agent harness (AGENTS.md, skills, KB, tooling, MCP connectivity). |
 | `skill-creator` | Create or improve skills (structure, gotchas, references/assets, scripts, review readiness). |
 | `sensitivity-check` | Scan text/files for PII and secrets; includes scripts for large inputs. |
+| `ml-project-scaffold` | Scaffold ML projects with lifecycle-appropriate structure, tooling, and agent guidance. |
 
 ## Repository Structure
 
