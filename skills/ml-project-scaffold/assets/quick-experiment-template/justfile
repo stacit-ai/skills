@@ -13,11 +13,18 @@ install: venv compile
 install-dev: install
     uv pip install -r requirements.dev.txt
 
-hooks:
-    uvx pre-commit install
+format:
+    uv run --no-sync ruff format .
+
+lint:
+    uv run --no-sync ruff check .
+
+test *args:
+    uv run --no-sync pytest {{ args }}
 
 check:
-    uvx pre-commit run --all-files
+    uv run --no-sync ruff format --check .
+    uv run --no-sync ruff check .
 
 train:
     @echo "Create the training workflow, then replace this recipe."

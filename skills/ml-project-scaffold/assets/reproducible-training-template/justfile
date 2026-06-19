@@ -3,21 +3,23 @@ default:
 
 setup:
     uv sync
-    uvx pre-commit install
 
 check:
-    uvx pre-commit run --all-files
+    uv run ruff format --check .
+    uv run ruff check .
     uv run pytest -m "not slow"
 
 format:
     uv run ruff format .
-    uv run ruff check --fix .
+
+lint:
+    uv run ruff check .
 
 test *args:
-    uv run pytest {{args}}
+    uv run pytest {{ args }}
 
 test-fast *args:
-    uv run pytest -m "not slow" {{args}}
+    uv run pytest -m "not slow" {{ args }}
 
 train:
     @echo "Create the training workflow module, then replace this recipe."
