@@ -35,4 +35,7 @@ code module into config or use config as a model assembly language by default.
 ## Git Safety
 
 Do not commit secrets, `.env` files, private raw data, checkpoints, or run outputs.
-Pre-commit and CI should catch common formatting and repository-safety issues.
+When pre-commit is enabled, compose it from the project's selected tools and keep it
+consistent with CI. Run formatting, linting, type checking, and tests directly from
+`justfile` and CI rather than using pre-commit as the aggregate command runner. Keep
+secret scanning last in pre-commit, after every hook that can change files.
