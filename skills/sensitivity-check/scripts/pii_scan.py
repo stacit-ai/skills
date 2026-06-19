@@ -1,6 +1,7 @@
 #!/usr/bin/env -S uv run
 # /// script
 # dependencies = [
+#   "click>=8,<9",
 #   "presidio-analyzer>=2.2,<3",
 #   "spacy>=3.7,<4",
 # ]

@@ -35,6 +35,7 @@ conclusion report.
 | Library | Version | Purpose |
 |---|---|---|
 | `tiktoken` | `>=0.7,<1` | GPT-4 token counting for routing decisions |
+| `click` | `>=8,<9` | CLI runtime dependency required by the PII analyzer import chain |
 | `presidio-analyzer` | `>=2.2,<3` | PII entity detection via NLP pattern matching |
 | `spacy` | `>=3.7,<4` | NLP backend for presidio-analyzer |
 | `detect-secrets` | `>=1.4,<2` | Secret/credential pattern detection |
