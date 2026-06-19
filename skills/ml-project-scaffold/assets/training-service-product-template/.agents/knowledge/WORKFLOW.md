@@ -5,9 +5,6 @@
 Use root commands for common checks. Each subproject may have its own setup details
 after dependencies and serving framework are chosen.
 
-Keep root format, lint, test, integration, and aggregate check recipes independently
-callable and direct. Do not delegate the complete check suite to pre-commit.
-
 ## Training To Service Handoff
 
 Training artifacts must carry enough metadata for the service to load and run them
