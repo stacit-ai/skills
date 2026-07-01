@@ -53,7 +53,16 @@ Without this skill, an agent would likely:
 - Split reference files by sub-topic rather than by branching condition, causing
   either all files to load simultaneously (defeating progressive disclosure) or files
   that can never be assigned a clean when-to-load trigger
+- Move content to reference files before designing the `SKILL.md` workflow, producing
+  references that do not correspond to real conditional branches
+- Move content that is needed on most runs, or branch content too small to justify a
+  separate load, into reference files and defeat progressive loading instead of
+  preserving it
 - Write templates that over-constrain output by specifying content rather than structure
+- Move non-fixed, task-dependent output into assets, causing generated work to follow
+  a template when it should remain flexible
+- Put explanatory guidance or decision rules in assets instead of SKILL.md or
+  conditional references
 - Embed repo-internal steps in the generated `SKILL.md` body — for example, "create
   `docs/specs/<name>.md` first" or "run `validate_harness.py`" — making the skill
   unusable when deployed outside this repository where those files do not exist
@@ -85,6 +94,8 @@ Out of scope:
 - Workflow steps covering the full creation process
 - Gotchas — the highest-value content, derived from known failure modes only
 - Instruction patterns and guidance on when to use each type
+- Content needed on every run or most runs, even when it belongs to a recognizable
+  topic
 
 **Never include in `SKILL.md` body:**
 - References to files outside `skills/<name>/` — no `docs/specs/`, `WORKFLOW.md`,
@@ -94,10 +105,19 @@ Out of scope:
 **Move to `references/` (loaded on demand):**
 - Hard spec constraint tables (frontmatter field rules, name character rules, body
   limits) — needed only when validating or uncertain about a constraint
+- Explanatory guidance that is needed only after the `SKILL.md` workflow enters a
+  specific condition branch and is substantial enough to justify a separate load.
+  Design the SKILL.md workflow first, then split references only where that workflow
+  exposes real load conditions.
 
 **Move to `assets/` (loaded on demand):**
-- Minimal `SKILL.md` frontmatter boilerplate — the truly invariant parts only; no
-  sample body content that would constrain the agent's output
+- Fixed or semi-fixed material the agent should copy, apply, or lightly edit when
+  writing into a project
+- Templates whose output structure is intentionally stable, with only small fields or
+  sections to change
+- Reusable static resources. Asset decisions depend on fixed content or stable
+  structure, not length. Non-fixed output guidance belongs as instructions in
+  `SKILL.md` or in conditional `references/`, not as an asset.
 
 ## Gotchas Source
 
@@ -121,6 +141,14 @@ All gotchas in `SKILL.md` must come from confirmed failure modes, not generic ad
    always loaded together (same effect as putting content in SKILL.md) or cannot be
    assigned a single clean when-to-load condition; each file must correspond to
    exactly one decision branch
+10. Reference files created before the SKILL.md workflow is designed → files do not
+    match real branch points and get loaded too broadly
+11. Frequently needed or tiny branch content moved to `references/` → files load too
+    broadly or cost more than progressive disclosure saves
+12. Non-fixed content moved to `assets/` → generated output is constrained by a
+    template when it should vary by task
+13. Explanatory guidance placed in `assets/` → agents treat guidance as copyable
+    material instead of instructions
 
 ## Quality Bar
 
