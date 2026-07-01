@@ -49,8 +49,14 @@ is at least one file to place in them.
 - Add a **Gotchas** section early — this is the highest-value content.
 - Ground content in real artifacts (runbooks, API specs, git history), not generic
   summaries.
-- Use conditional load instructions for reference files: specify *when* to load each
-  file, not just that it exists.
+- Design the main workflow before deciding which references or assets are needed.
+- Use `references/` for explanatory material needed only under a specific condition
+  and substantial enough to justify a separate load. Specify *when* to load each file,
+  not just that it exists.
+- Use `assets/` only for fixed or semi-fixed material the agent will copy, apply, or
+  lightly edit, regardless of length. If output should vary substantially, write
+  instructions instead and place them in `SKILL.md` or conditional `references/`
+  according to loading frequency and reference load cost.
 
 See `docs/QUALITY.md` for the full content requirements and review checklist.
 
@@ -102,7 +108,8 @@ ci: add harness validator to pre-commit
 2. Make the smallest change that addresses the issue.
 3. Update `docs/specs/<name>.md` if the skill's scope changed. *(Contributor
    step — not skill content.)*
-4. Add a new Gotcha if the change corrects an agent behavior error.
+4. Add or update a Gotcha only if the change captures a reusable, non-obvious agent
+   behavior failure mode.
 5. Run the validator.
 
 ## Reviewing a Skill

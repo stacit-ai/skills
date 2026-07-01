@@ -55,14 +55,27 @@ Cover indirect phrasings — not only the explicit domain name.
 
 - Write step-by-step workflow instructions, not a feature list.
 - Include a **Gotchas** section: domain-specific facts the agent would get wrong by
-  reasonable assumption. Update on every correction. Do not add general advice
-  ("handle errors appropriately").
-- Reference files with conditional load instructions: specify *when* to load each file,
-  not just that the file exists.
-- Move content needed only in specific conditions to `references/`; keep `SKILL.md` to
-  what is needed on almost every run.
+  reasonable assumption. Add or update gotchas only when a correction reveals a
+  reusable, non-obvious failure mode. Do not add general advice ("handle errors
+  appropriately").
 - One default approach per task; mention alternatives in a single sentence. Do not
   present equal options — agents given menus make inconsistent choices.
+
+## Resource Placement Rules
+
+- Design the `SKILL.md` workflow first, then decide which supporting files are needed.
+- Keep instructions needed on every run or most runs in `SKILL.md`.
+- Move explanatory material to `references/` only when it is needed under a specific
+  condition and is substantial enough to justify a separate load. Every reference file
+  load instruction must specify *when* to load it, not just that the file exists.
+- Use `assets/` only for fixed or semi-fixed material the agent will copy, apply, or
+  lightly edit when writing into a project. Asset decisions depend on fixed content or
+  stable structure, not length.
+- Do not use assets for content that should vary substantially by task, audience, or
+  user request. Use instructions instead, placed in `SKILL.md` or in conditional
+  `references/` according to the same loading rules.
+- Do not put decision rules, workflow steps, explanatory reference material, or
+  one-off examples in `assets/`.
 
 ## Script Rules (Within Skills)
 
@@ -107,6 +120,9 @@ external dependencies.
 - [ ] `description` uses imperative phrasing and covers indirect triggers
 - [ ] `Gotchas` contains only non-obvious, domain-specific facts
 - [ ] Every reference file load instruction specifies a precise condition
+- [ ] Assets contain only fixed or stable-pattern material to copy, apply, or lightly
+      edit; no decision rules, explanatory references, one-off examples, or content
+      that should be generated flexibly
 - [ ] All scripts implement `--help` and accept input via flags only
 - [ ] Skill makes no assumption about framework, runtime, or platform (unless
       `docs/specs/<name>.md` explicitly restricts scope)

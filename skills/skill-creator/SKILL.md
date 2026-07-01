@@ -37,13 +37,15 @@ Not every skill needs all of these. Use them when they apply.
 
 **Gotchas** — Highest value. Non-obvious facts the agent would get wrong by reasonable
 assumption: naming inconsistencies, soft deletes, endpoints that lie, required flags
-that aren't obvious. Add a new gotcha on every correction. Domain-specific facts only —
-no general advice ("validate inputs").
+that aren't obvious. Add or update a gotcha only when a correction reveals a reusable,
+non-obvious failure mode. Domain-specific facts only — no general advice ("validate
+inputs").
 
-**Templates** — Structure only, not content. Invariant boilerplate (a language's
-shebang + metadata header, a fixed output format) is safe to template; task-specific
-logic is not. Short templates inline; longer or conditional ones in `assets/`. Templates
-that specify content constrain output diversity — use them only for truly fixed parts.
+**Templates** — Fixed or semi-fixed material the agent copies, applies, or edits
+lightly. Stable boilerplate, fixed output formats, and reusable static resources are
+safe to template; task-specific logic is not. Template assets are justified by stable
+content or structure. Templates constrain output diversity — use them
+only when the content or pattern is intentionally stable.
 
 **Checklists** — For multi-step workflows with dependencies or validation gates.
 
@@ -110,6 +112,7 @@ Body checklist:
 - [ ] Workflow steps (action-oriented verbs, not a feature list)
 - [ ] Gotchas section (domain-specific non-obvious facts only)
 - [ ] Every reference file load instruction specifies a precise trigger condition
+- [ ] Every asset link says when to load, copy, or apply it
 - [ ] Under 500 lines
 
 ### 4. Add Scripts (if needed)
@@ -160,19 +163,25 @@ All scripts must follow these rules regardless of language:
   a linter that only reports the offending line without explanation forces a
   round-trip back to the agent.
 
-### 5. Add References and Assets (if needed)
+### 5. Add References (if needed)
 
-Reference files go in `references/`. **Split by branching condition, not by topic.**
+Reference files go in `references/`. **Design `SKILL.md` first; split by branching
+condition, not by topic.**
 
 The agent reads SKILL.md first, then progressively loads reference files only when
-their specific condition is met. Design the split around *when* the agent needs the
-information, not *what* it covers:
+their specific condition is met. Draft the main SKILL.md workflow before creating
+references, and use that workflow to decide where a reference file earns its cost.
+Design the split around *when* the agent needs the information, not *what* it covers:
 
-- Identify the mutually exclusive branches in the skill's workflow
-- Create one reference file per branch that requires additional detail
+- Identify the conditional branches in the skill's workflow after the main workflow is
+  clear
+- Create a reference file only when information is needed inside a specific branch and
+  is substantial enough to justify a separate load
 - Content always needed together for one branch belongs in one file, even if it spans
   multiple sub-topics
-- Content needed regardless of branch belongs in SKILL.md body, not `references/`
+- Content needed on every run or most runs belongs in SKILL.md body, not `references/`
+- Short branch-specific guidance can stay in SKILL.md; reference files should reduce
+  context that would otherwise be loaded on unrelated branches
 
 In `SKILL.md`, every load instruction must specify a precise trigger condition:
 
@@ -182,10 +191,37 @@ In `SKILL.md`, every load instruction must specify a precise trigger condition:
 
 Not: "See references/ for details" — the agent needs to know *when* to load each file.
 
-Asset templates go in `assets/`. Structural boilerplate only — no implementation logic
-or sample content that would constrain the agent's output.
+### 6. Add Assets (if needed)
 
-### 6. Review Against the Spec
+Assets go in `assets/`. Use them for fixed or semi-fixed material the agent will write
+into a project by copying, applying, or making small edits.
+
+Create an asset only when the output content is intentionally fixed or follows a stable
+pattern. If the content needs task-specific judgment, broad rewriting, or flexible
+organization, write instructions instead of a template. Put those instructions in
+SKILL.md when they are needed on most runs, or in `references/` when they are needed
+only under a specific condition.
+
+Good asset candidates:
+
+- Fixed text or static resources that should be copied as-is
+- Templates with stable structure and a small number of fields to edit
+- Boilerplate whose shape should not vary across tasks
+
+Bad asset candidates:
+
+- Decision rules, workflow steps, or explanatory reference material
+- One-off examples that would bias the agent toward a narrow output
+- Content that should vary substantially by project, audience, or user request
+
+In `SKILL.md`, link each asset at its first mention and state when to load, copy, or
+apply it:
+
+```markdown
+Use [assets/output_template.md](assets/output_template.md) when the user requests the fixed report format.
+```
+
+### 7. Review Against the Spec
 
 If the skill has a `scripts/` directory, run the bundled validators and resolve all
 errors before proceeding; review warnings:
@@ -200,6 +236,7 @@ Manual checks (always required — cover semantics the scripts cannot verify):
 - [ ] `description` is in third person and covers indirect trigger phrasings
 - [ ] All file references use relative paths from the skill root
 - [ ] No reference file loaded without a precise trigger condition
+- [ ] No asset used for content that should be generated flexibly
 - [ ] `name` matches directory name exactly
 - [ ] `compatibility` ≤ 500 chars (if present)
 - [ ] Body under 500 lines
@@ -218,9 +255,11 @@ Load [references/spec_hard_rules.md](references/spec_hard_rules.md) if any check
   together for one branch belongs in one file even if it spans multiple sub-topics;
   splitting by topic creates files that are either all loaded at once (negating
   progressive disclosure) or can never be assigned a clean single-condition trigger
-- **Script templates must be structural boilerplate only** — including implementation
-  logic causes agents to produce template variants; only shebang, metadata block,
-  arg-parsing scaffold, and I/O routing are invariant
+- **Reference files must be branch-specific and worth loading separately** — content
+  needed on most runs belongs in `SKILL.md`, and short branch guidance can stay inline
+- **Assets reduce output flexibility** — use assets only for fixed or stable-pattern
+  material the agent should copy or lightly edit, regardless of length; explanatory
+  guidance belongs in SKILL.md or conditional `references/`, not `assets/`
 - **`description` is the only text read before activation** — must cover indirect
   phrasings or the skill won't trigger on valid use cases
 - **Gotchas are for domain-specific non-obvious facts only** — general advice
