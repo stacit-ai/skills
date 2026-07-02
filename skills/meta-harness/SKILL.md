@@ -1,353 +1,278 @@
 ---
 name: meta-harness
 description: >
-  Design, build, improve, audit, and evolve a project's harness framework — the full
-  set of agent-guidance artifacts beyond the model: AGENTS.md, skills, knowledge base,
-  quality tooling, hooks, and connectivity (MCP). Use when asked to set up agent
-  instructions or a harness, create or update AGENTS.md, improve a project's agent
-  setup, add a project-specific skill, build or evolve a harness framework, or when
-  the user says "how should agents work in this project", "help me structure the agent
-  context", "set up Copilot for this codebase", "the agent doesn't know our
-  conventions", "make agents smarter here", or "audit the harness".
+  Design, audit, and improve agent harnesses: the environment, constraints, tools,
+  and accessible knowledge that help coding agents match user expectations. Use
+  when setting up agent instructions, creating or editing AGENTS.md, making project
+  knowledge discoverable, adding project skills, designing sync or maintenance
+  mechanisms, calibrating agent autonomy, or reviewing why agents miss project
+  conventions.
 ---
 
 # Meta-Harness
 
-**Harness** = everything in an agent system except the model: AGENTS.md, skills,
-knowledge base, quality tooling, hooks, connectivity (MCP). Core trade-off: constrain
-output diversity to gain quality and predictability.
+A harness is the agent-visible environment, constraints, tools, and accessible
+knowledge that make agents match user expectations. It expands agent capability with
+environment, information, and tools, then narrows the implementation space with
+proportionate target, architecture, quality, and workflow constraints.
 
-## Persona & Philosophy
+This skill is only a design aid. It may exist in one user's global skill library while
+other teammates and future agents cannot see it. Any rule that future agents must
+follow belongs in the project's reachable harness: repo-connected files, project
+skills, registered tools, validation commands, or reachable endpoints.
 
-Operate as a **Senior Architect**; treat the user as **Product Manager**.
+## Core Rules
 
-Three invariants — never violate:
-
-1. **Agent-first**: harness files are written for agents, not humans. Plain text,
-   directive, no pleasantries, no redundant tokens.
-2. **Version-controlled existence**: any instruction not in a committed file or
-   registered tool is invisible to future agents. If it matters, it must be committed.
-3. **Lean Architecture**: only create a harness component when it serves an immediate,
-   concrete need. "Might be useful later" is not sufficient justification.
+- Important information must be accessible to future agents. Conversation history,
+  private chat, and team habit are not durable harness.
+- Inspect discoverable project facts before asking the user. Ask only for team
+  decisions, access boundaries, or facts that cannot be found locally.
+- Create only components that satisfy current concrete needs.
+- Keep entrypoints short and navigational. Detailed rules belong behind pointers.
+- Choose the maturity level from user requirements, project facts, and risk. Keep
+  components proportionate; thinness controls cost, but is not the goal.
+- Default to one agent. Consider multiple agents only when the user asks for it or
+  when designing advanced autonomy.
+- Do not add commit, PR, review, merge, task-state, notification, or other workflow
+  automation unless the team has explicitly delegated that action.
 
 ## Workflow
 
-### 1. Scan the Project
+### 1. Establish The Visibility Boundary
 
-Read: directory structure, existing harness files (AGENTS.md, `.agents/`), tech stack
-indicators (package manifests, CI config), README, commit history if available. Infer
-project lifecycle phase, team size signals, tech stack, and existing harness health.
+Identify what future agents can actually discover. If an important project rule is
+only in the prompt, current conversation, a personal global skill, private chat, or
+team habit, encode it into project harness or point to a reachable source.
 
-Ask only when two valid paths exist and the cost of choosing wrong is high.
+Every created harness must include or point to:
 
-### 2. Classify Project Type
+- where future agents start reading
+- where project goals, architecture, conventions, and workflow rules live
+- what validation commands or checks agents should run
+- what must be updated when structure, commands, conventions, or workflows change
 
-Map findings to the Intensity Matrix. A project showing signals of both Long-term and
-Exploratory should be treated as Maintainable Exploratory (Medium).
+### 2. Inspect The Project
 
-### 3. Assess Current Harness Health
+Read enough local state to avoid guessing:
 
-Audit existing harness for:
+- existing entrypoints and harness files
+- repository layout and architecture documents
+- README and project goal signals
+- language, framework, package, and tool manifests
+- development, test, deployment, and CI signals
+- coding style, validation commands, and version-control conventions
+- human involvement level, delegated workflow actions, approval boundaries, and handoff
+  expectations
+- recent git history when it clarifies lifecycle or workflow
 
-- **Missing components**: required by the classified thickness but absent
-- **Outdated content**: references behavior or structure that no longer exists
-- **Budget violations**: AGENTS.md exceeds 150 lines
-- **Orphaned references**: pointers to files that don't exist
-- **Excess components**: present but not warranted by project type — candidates for
-  removal
+When the task is primarily audit, repair, slimming, modernization, or conflict cleanup
+of an existing harness, read
+[references/audit-existing-harness.md](references/audit-existing-harness.md). For
+normal baseline creation or targeted updates, continue with this file.
 
-### 4. Draft Harness Plan
+### 3. Choose The Practical Target
 
-Produce a structured action list: component to add/update/remove, execution order,
-governance mode to adopt. Include one-line rationale per action.
+Use the checklist below to choose the target maturity. User requirements can set a
+minimum or target level; project facts and risk decide whether that level is adequate.
+Do not downgrade just to stay lightweight or upgrade just to appear more robust.
 
-Default execution order: AGENTS.md → Skills → Knowledge Base → Quality Tools →
-Hooks → MCP.
+Select the level that matches the evidence:
 
-### 5. Confirm Before High-Risk Actions
+- L0: prompt-only or temporary guidance. Use for occasional questions, trivial
+  changes, or low-risk one-off work where durable instructions would add more cost
+  than value.
+- L1: a short durable entrypoint plus minimal validation or constraints. Use when
+  agents will return to the project, but the project is simple, low-risk, or mostly
+  human-written.
+- L2: a feedback loop with stronger validation, workflow constraints, and explicit
+  sync/update rules. Use when the project is maintained, collaborative, agent-driven
+  for substantial implementation, has public or user-visible contracts, is costly to
+  break, changes frequently, or the user asks for durable tests, CI, workflow rules,
+  or sync/maintenance.
+- L3: self-maintaining harness with durable memory, autonomous upkeep, and audited
+  feedback.
+- L4: multiple agent roles with explicit context boundaries and coordination rules.
 
-Always confirm with the user before:
+Report the checklist evidence for the chosen level. If evidence points to L2, select
+L2 unless the user deliberately limits scope; if evidence does not support L2, explain
+why L0 or L1 is sufficient.
 
-- Adding any MCP or external connectivity component (security invariant — no exceptions)
-- Removing existing harness components
-- Making structural changes affecting more than three files
+Default to a single-agent harness for L0-L2. Do not introduce role-split agents,
+self-maintenance, or autonomous workflow operation unless the user explicitly asks for
+advanced autonomy or the project already has project-visible authority for it.
 
-Autonomous execution is appropriate for: creating new skills, adding KB entries,
-updating AGENTS.md within budget, establishing governance documentation.
+Read [references/advanced-autonomy.md](references/advanced-autonomy.md) only when the
+user explicitly asks for self-evolution, persistent memory, unattended operation,
+autonomous task routing, multi-agent design, agent-failure-driven knowledge updates,
+or L3/L4.
 
-### 6. Execute
+### 4. Create Or Revise The Entrypoint
 
-Create or update files per the plan. Load asset templates when creating new files:
+Prefer AGENTS.md as the project-wide agent context. Use CLAUDE.md by itself only when
+the team explicitly says the project is for Claude Code only. If both AGENTS.md and
+CLAUDE.md are needed, keep AGENTS.md as the source of truth and make CLAUDE.md refer
+to it instead of duplicating rules.
 
-- Creating or restructuring AGENTS.md → load
-  [assets/agents_md_template.md](assets/agents_md_template.md)
-- Creating HARNESS_EVOLUTION.md → load
-  [assets/harness_evolution_template.md](assets/harness_evolution_template.md)
-- Distilling a repeated behavior into a skill → load
-  [assets/project_skill_template.md](assets/project_skill_template.md)
-- Creating a knowledge base document → load
-  [assets/knowledge_entry_template.md](assets/knowledge_entry_template.md)
-- Enabling Active governance (creating meta-skills) → for each meta-skill, load the
-  corresponding template directory, copy directory to
-  `.agents/skills/<name>`, then generate a patch that replaces all
-  `[insert ...]` markers and adapts the skill content to fit this project:
-  - `skill-refine`: [assets/skill_refine_template](assets/skill_refine_template)
-  - `workflow-promote`: [assets/workflow_promote_template](assets/workflow_promote_template)
-  - `anti-rot`: [assets/anti_rot_template](assets/anti_rot_template)
-  - `harness-sync`: [assets/harness_sync_template](assets/harness_sync_template)
+Use [assets/agents-md-maximal-skeleton.md](assets/agents-md-maximal-skeleton.md) when
+creating or substantially restructuring AGENTS.md. Start from the maximal empty
+structure, fill only sections backed by current facts or user decisions, then delete
+every section that does not serve the project.
 
-### 7. Verify
+Skip durable entrypoint creation for L0 unless the user explicitly asks for one. For
+L1+, the entrypoint is the normal discovery root.
 
-After execution:
+The final entrypoint should be short and navigational. Include:
 
-- Count AGENTS.md lines: must be ≤ 150 (target ≤ 100)
-- Confirm AGENTS.md informs agents about harness architecture files (folder pointers
-  suffice for multi-file domains; listing every individual file is not required)
-- Confirm all internal harness cross-references resolve
-- Confirm governance mode is documented in AGENTS.md or a KB file
-- Confirm a consistency layer appropriate to the project type is in place
-- If Active governance: confirm HARNESS_EVOLUTION.md exists (long-term projects only)
+- project purpose
+- an architecture-level project map unless another discoverable architecture document
+  already provides it
+- important reachable context
+- core conventions that apply to most tasks
+- when-to-read-what pointers
+- validation commands
+- approval or safety boundaries that apply to most tasks
+- a small sync/update rule or pointer to the project-visible sync mechanism, unless a
+  sync project skill is the chosen mechanism
 
----
+Keep the project map shallow: enough to tell agents where to explore, not a full file
+inventory. A map that changes on routine file additions is too detailed.
 
-## Harness Intensity Matrix
+### 5. Add Local Knowledge Library Only When Needed
 
-| Project Type | Thickness | Key Components | Consistency Layer | Priority |
-|---|---|---|---|---|
-| Long-term Maintainable | **Thick** | Full suite: CI/CD, thick KB, fine-grained Skills, Hooks, Linter | Skill-based | Maximum robustness & anti-rot |
-| Maintainable Exploratory | **Medium** | Linter, basic KB, Skills for key workflows | Reference-based | Quality ↔ flexibility balance |
-| Defined One-off | **Medium** | Detailed architecture/goal doc (DESIGN.md or KB entry) | Inline | Result-focused; skip governance overhead |
-| Undefined Exploratory | **Light** | Connectivity (MCP), minimal Linter | Inline or none | Resource access only; maximize autonomy |
+Create a local agent-first knowledge library only when the entrypoint would become too
+long or when agents need focused documents with precise load conditions. The default
+local knowledge root is `./.agents/knowledge/` at the project root. It is a set of
+files or folders, not one catch-all document.
 
----
+Only create categories the current project needs. Do not create empty knowledge
+folders or placeholder documents. Make every knowledge entry discoverable from
+AGENTS.md through `When To Read What` or an equivalent entrypoint rule so agents load
+it only when relevant.
 
-## Component Quick Reference
+Use the matching asset when creating a local knowledge entry:
 
-### Root-level Convention Files
+- Quality control: [assets/knowledge-quality-skeleton.md](assets/knowledge-quality-skeleton.md)
+- References: [assets/knowledge-references-skeleton.md](assets/knowledge-references-skeleton.md)
+- Workflow: [assets/knowledge-workflow-skeleton.md](assets/knowledge-workflow-skeleton.md)
+- Plan: [assets/knowledge-plan-skeleton.md](assets/knowledge-plan-skeleton.md)
+- Goals or requirements: [assets/knowledge-goals-skeleton.md](assets/knowledge-goals-skeleton.md)
 
-These live at the project root (not inside `.agents/`):
+Prefer existing maintained project docs when they are accurate and concise. Do not
+duplicate external truth locally unless the project needs an offline copy, a pinned
+snapshot, or a concise agent-facing summary. When important context should live
+outside repo-local docs or the source of truth is a registered tool or reachable
+endpoint, read
+[references/external-knowledge-carrier.md](references/external-knowledge-carrier.md).
 
-- **`AGENTS.md`** — harness entry point; must list every other harness file so agents
-  know to look for them; budget ≤ 100 lines target, ≤ 150 hard limit
-- **`ARCHITECTURE.md`** — technical architecture: directory ownership, module
-  boundaries, build/deploy topology; create when requested or when AGENTS.md structural content would exceed the line budget (move
-  the overflow here); load when making structural or cross-cutting changes
-- **`DESIGN.md`** — frontend visual spec following the
-  [Stitch design-md format](https://stitch.withgoogle.com/docs/design-md/overview.md);
-  create only for projects with a visual/UI component
+### 6. Calibrate Layer Thickness
 
-Load [assets/agents_md_template.md](assets/agents_md_template.md) when creating or
-fully restructuring AGENTS.md.
+For each harness layer, choose `omitted`, `light`, `medium`, or `thick`. Omit a layer
+when no current need proves its value. Use light guidance when a sentence or pointer
+is enough. Use medium when agents need a dedicated file, workflow, or validation path.
+Use thick only when enforcement, richer tooling, or repeated loading cost is justified
+by project risk or maintenance needs.
 
-### Skills (SOPs)
+Record the known human involvement level before adding workflow constraints: Q&A,
+command assistance, implementation assistance, PR/task handoff, or autonomous
+maintenance. If the level is unknown, assume humans keep ownership of approvals,
+integration, and external workflow state.
 
-- Location: `.agents/skills/<name>/` — every project-specific skill, no exceptions
-- Trigger to create: a workflow is repeatable and benefits from constraint or guidance;
-  or the 3× rule has fired (Active mode)
-- Auto-discovered: agent frameworks load skills automatically via their `description`
-  field — no AGENTS.md skill listing is needed for framework loading; the framework
-  discovers skills without explicit registration
-- `WORKFLOW.md` or `workflow/` is a lighter alternative when full skill structure is
-  not warranted: plain SOP text, referenced from AGENTS.md with file + section heading
-  (e.g., 'see WORKFLOW.md §Deploy Process' or 'search for `## Deploy Process` in WORKFLOW.md')
-- Load [references/thick_harness_components.md](references/thick_harness_components.md)
-  when building skills for a Thick project (detailed structure specs)
+- Environment: weaker isolation needs clearer approval and safety boundaries; stronger
+  isolation can support more autonomous agent work. Record only boundaries future
+  agents need.
+- Target constraints: most durable harnesses need at least a goal statement. Add
+  thicker product, interface, visual, or behavior constraints only when the project
+  has such contracts.
+- Implementation constraints: keep one-off and exploratory work thin. Use thicker
+  architecture, module, dependency, and design-direction guidance for complex or
+  long-lived projects.
+- Quality constraints: calibrate tests, lint, formatting, validation commands, review
+  gates, and repository-safety constraints by error cost, maintenance horizon,
+  existing language or tool guarantees, and runtime/token cost. Custom quality tools
+  must explain what failed, why it matters, and the likely fix or next command.
+- Workflow constraints: record only team-decided planning, commit, PR, review, merge,
+  handoff, task-state, and approval rules. Do not invent automation, notifications, or
+  status transitions.
+- Information tools: add references, knowledge files, registered tools, or reachable
+  endpoints only when they expand current agent capability and can be discovered by
+  future agents.
+- Workflow tools: add only when the team has delegated workflow actions and access is
+  authorized. Otherwise document the human handoff.
+- Capability tools: add only when they are needed for current development, validation,
+  inspection, or debugging work.
+- Repository safety constraints: calibrate around leak risk and collaboration boundary;
+  focus on preventing secrets or private data from entering the repository.
 
-### Knowledge Base
+Validation should help agents self-correct: say what failed, why it matters, where
+the source of truth is, and what to run or inspect next. This applies to validation
+commands, custom linters, formatters, tests, and quality scripts. Do not add expensive
+checks or custom tools unless they protect a current need.
 
-Default location: `.agents/knowledge/` — but scan for existing `docs/`, `ADR/`, or
-similar first; consolidate rather than split. KB can contain:
+### 7. Capture Repeated Procedures
 
-| File / Folder | Purpose | Single-file vs folder |
-|---|---|---|
-| `REFERENCES.md` / `references/` | External doc URLs (prefer llms.txt links) or copied llms.txt files; can also be exposed via MCP | Single file for a short URL list; folder when storing multiple copied docs |
-| `PLAN.md` / `plan/` | Current project plans; if using an external PM tool (Linear, etc.) via MCP, keep a `PLAN.md` that explains how MCP manages plans | Single file unless plan has multiple active streams |
-| `WORKFLOW.md` / `workflow/` | Operation SOPs; lightweight skill alternative for passive-mode projects | Single file when one process; folder when multiple distinct workflows |
-| `SPEC.md` / `spec/` | Project requirements | Single file for contained scope; folder for multi-domain specs |
-| `QUALITY.md` | Code quality and security requirements | Always single file |
+Keep simple rules in the entrypoint or a knowledge file. Read
+[references/project-skill.md](references/project-skill.md) when a project procedure is
+repeated, fragile, order-sensitive, or too branchy for ordinary docs.
 
-Single-file vs folder rule: start with a single file; split to a folder when the file
-exceeds ~150 lines or contains clearly separable sub-topics.
+Project skills created from this process must be discoverable by future agents through
+the project's skill mechanism or entrypoint pointers. They must not depend on this
+global meta-harness skill remaining available.
 
-These are common file types — include only those the project needs, and add others as
-appropriate. Not every project requires all five.
+### 8. Keep The Harness Current
 
-Load [assets/knowledge_entry_template.md](assets/knowledge_entry_template.md) when
-creating a new KB document.
+Any durable harness should tell future agents what content can become stale. For
+lightweight projects, one sentence in the entrypoint is enough. Use a table, workflow,
+or project skill only when the project is maintained, multi-artifact, or repeatedly
+changed.
 
-### Quality Tools
+For L0-L2, sync and maintenance are source-of-truth driven: when a visible file,
+command, interface, workflow rule, or reachable endpoint changes, update dependent
+harness content. Do not make ordinary L0-L2 harnesses update references or knowledge
+automatically from agent failures. Failure-driven knowledge/reference updates require
+L3+ review or explicitly authorized self-maintenance.
 
-- Apply to both production code and harness files (AGENTS.md budget, skill validity)
-- Minimum for Medium/Thick: one linter for the primary language, committed config
-- Load [references/thick_harness_components.md](references/thick_harness_components.md)
-  for harness-specific quality check requirements (Thick projects)
-
-### Hooks
-
-- Runtime callbacks for correcting specific, documented recurring error patterns
-- Determine hook mechanism from the agent framework in use; omit if unsupported
-- Auto-loaded: hooks are activated by the framework based on their placement in
-  framework-specific locations (e.g., `.cursor/rules/`, `.github/copilot-instructions.md`,
-  `CLAUDE.md`) — do not list hooks in AGENTS.md; the framework loads them automatically
-  for all relevant operations without registration
-- Load [references/thick_harness_components.md](references/thick_harness_components.md)
-  for hook placement rules by framework
-
-### Connectivity (MCP)
-
-- Principle: grant only the tools/resources required for declared tasks — no speculative
-  access, no capability creep
-- **Mandatory confirmation**: always confirm with user before creating any MCP config
-- Auto-loaded: MCP servers are loaded from framework-specific config files
-  (e.g., `.mcp.json`, `mcp_servers.json`) — do not list MCP servers in AGENTS.md;
-  the framework discovers them from config without explicit harness registration
-- Load [references/connectivity_mcp_security.md](references/connectivity_mcp_security.md)
-  before writing any connectivity component
-
----
-
-## Governance Modes
-
-Select based on harness thickness and project duration:
-
-| Thickness | Duration | Mode |
-|---|---|---|
-| Thick | Any | Active |
-| Medium | Long-running | Active |
-| Medium | One-off | Passive |
-| Light | Any | Passive |
-
-**Passive mode**: maintain existing harness consistency only. No autonomous component
-creation. Flag stale content to the user; do not auto-modify.
-
-**Active mode**: agent autonomously refines harness. When enabling Active mode, follow [references/active_governance.md](references/active_governance.md) to create a self-maintaining harness engineering architectural layer.
-
-Document the selected mode and its triggers in AGENTS.md or a KB file. An undocumented
-governance mode is the same as no governance mode.
-
----
-
-## Consistency Layer
-
-Every harness must include a mechanism for keeping it in sync with the project as
-implementation evolves. This applies in both Passive and Active modes — the form
-scales with complexity, the requirement does not.
-
-**Inline** (Light, Defined One-off):
-
-When the sync table fits within ~10 lines of AGENTS.md budget, embed it directly:
+If synchronization is handled by a project skill, do not also create a Keep In Sync
+section in AGENTS.md. Avoid duplicate rules; only ensure future agents can discover
+the skill through the project's skill mechanism or an entrypoint pointer if discovery
+is not automatic.
 
 ```markdown
-## Keep in Sync
+## Keep In Sync
 
-| When this changes | Update this |
+| When this changes | Update |
 |---|---|
-| Directory structure | AGENTS.md §Structure |
-| API or interface renamed | Relevant skill Gotchas and KB files |
-| Convention changed | AGENTS.md §Core Conventions + relevant KB file |
+| Project structure or entry commands | AGENTS.md and related knowledge pointers |
+| Public interfaces or user-visible behavior | Specs, examples, tests, and agent guidance |
+| Validation commands or workflow rules | AGENTS.md validation/workflow sections |
 ```
 
-When sync rules would overflow the AGENTS.md budget, move the rules to a dedicated
-workflow file and leave context-specific pointer lines in AGENTS.md instead:
+Read [references/sync-and-maintenance.md](references/sync-and-maintenance.md) when
+sync becomes multi-step, recurring, cross-artifact, or when the project needs long-term
+cleanup for stale, duplicated, contradictory, or excessive harness content.
 
-```markdown
-- When adding a new API endpoint, see WORKFLOW.md §API Conventions
-- When changing auth rules, search for `# Auth` in docs/security.md
-```
+### 9. Produce And Verify
 
-**Reference-based** (Maintainable Exploratory — multiple sync concerns, more structure
-than inline can provide):
+When planning or finishing harness work, report:
 
-For each sync concern, create a dedicated workflow section or file (single `WORKFLOW.md`
-with one section per concern, or a `workflow/` folder when content is too long). In
-AGENTS.md, keep one pointer line per concern:
+- affected harness layers
+- target maturity level
+- known human involvement level and delegated workflow authority
+- agent topology, normally single-agent
+- each layer's thickness: omitted, light, medium, or thick
+- files, project skills, registered tools, or reachable endpoints changed
+- create/update/remove actions
+- why a thicker harness was not chosen, when that is non-obvious
+- validation steps
+- assumptions and user decisions still needed
 
-```markdown
-- When adding a new API endpoint, see WORKFLOW.md §API Conventions
-- When renaming a module, search for `## Module Rename` in WORKFLOW.md
-- When auth rules change, see workflow/security-sync.md §Auth Rule Change
-```
-
-Load [references/sync_layer.md](references/sync_layer.md) when setting up this form.
-
-**Skill-based** (Long-term Maintainable, or Active mode):
-
-Create **one dedicated skill per sync concern** — not one monolithic sync skill. Each
-skill description triggers on relevant file or directory changes, for example:
-
-> "Keep API spec aligned with endpoint implementations. Use when `spec/`, `endpoints/`,
-> or related files are modified."
-
-Agents load specialized sync skills automatically via their descriptions — no AGENTS.md
-entry is needed. Use the **`harness-sync`** skill (a meta-skill that creates these
-specialized skills) when a new consistency concern arises.
-
-Load [references/active_governance.md](references/active_governance.md) for the
-harness-sync meta-skill creation procedure.
-
----
-
-## Security Invariants
-
-- **Never add MCP or external connectivity without explicit user authorization** — this
-  applies equally in Active and Passive modes. Adding MCP expands agent capability
-  boundaries and may break security guardrails; always present the user confirmation
-  template and obtain explicit approval before proceeding.
-- Apply the minimal capability principle: grant only the specific tools/resources the
-  agent needs for declared tasks. No speculative access.
-- Load [references/connectivity_mcp_security.md](references/connectivity_mcp_security.md)
-  before writing any MCP configuration — required regardless of governance mode.
-- Never embed credentials, API keys, or access tokens in harness files. Use environment
-  variable references.
-
----
+Verify that future agents can discover the relevant rules without this conversation or
+this global skill. Check local links, validation commands, entrypoint length, and
+whether sync/update rules are present in project-visible harness.
 
 ## Gotchas
 
-- **Outdated harness is more damaging than no harness** — stale instructions actively
-  mislead agents. Every functional change must update the corresponding harness files
-  in the same commit. No exceptions.
-
-- **AGENTS.md budget is a hard constraint** — count lines before and after every edit.
-  At 150 lines the file must be refactored: move content to KB or referenced docs, not
-  compressed or summarized inline.
-
-- **Never create empty subdirectories** — preemptive `.agents/skills/`, `knowledge/`
-  directories mislead agents into expecting files that don't exist. Create directories
-  only when populating them in the same action.
-
-- **MCP requires explicit user confirmation** — security invariant, not a preference.
-  Execute only after confirmation; document the confirmation reference.
-
-- **Skills belong in `.agents/skills/<name>/`** — never in project root, `docs/`, or
-  ad-hoc locations. Projects using other conventions should migrate, not accommodate.
-
-- **Knowledge base defaults to `.agents/knowledge/`** — always scan for an existing
-  docs convention before choosing a location. Consolidate rather than split.
-
-- **Governance mode must be in the harness** — if not recorded, future agents default
-  to passive regardless of intent. Document the mode and its triggers explicitly.
-
-- **HARNESS_EVOLUTION.md is for long-term projects only** — omit for Defined One-off
-  and Undefined Exploratory. Its absence is the correct state for those types.
-
-- **Lean Architecture is non-negotiable** — "we might need this later" does not justify
-  creating a harness component. Absence of a component is a deliberate choice, not a gap.
-
-- **Monorepo harness is layered** — a root AGENTS.md handles global context; each
-  sub-package may have its own `.agents/` directory scoped to that package. Root
-  AGENTS.md references sub-harnesses but never duplicates their content.
-
-- **Removing a component requires removing all references to it** — orphaned pointers
-  in AGENTS.md or other harness files cause agents to attempt loading non-existent files.
-  Clean up all cross-references on removal.
-
-- **AGENTS.md must inform agents about harness architecture layer files** — components
-  not discoverable from AGENTS.md are invisible to entering agents. A folder pointer
-  (e.g., `spec/` → "when implementing features") is sufficient when a domain has many
-  files; listing every individual file is not required and may bloat the budget.
-
-- **Consistency layer is mandatory in all modes** — the form scales (Inline → Reference
-  → per-concern Skills), but the requirement does not. In skill-based form, each sync
-  concern gets its own dedicated skill loaded automatically by the agent framework. A
-  harness without a sync mechanism will drift from the implementation it describes.
+- If future agents cannot discover information, it is not project harness.
+- Stale harness content is worse than absent harness content because it makes agents
+  confidently follow wrong instructions.
+- Do not name ordinary principles with invented labels. Use direct instructions.
+- Do not copy examples from a user's explanation into generic skill text.
